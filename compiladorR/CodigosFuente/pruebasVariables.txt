@@ -1,0 +1,76 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+	public static void main(String[] args)
+	{
+
+		int a;
+		int b = 0;
+		int c, d = 0;
+		int e = 0, f;
+		float g = 0.5;
+		float h, i = 0.5;
+		float j = bb, k;
+		double l = 0.5;
+		char n = ',';
+		char o = '[', p;
+		char q, r = 'c';
+		String m = ",";
+		String s = "[", t;
+		String u, v = "]";
+		boolean w = false;
+		boolean x = true, y;
+		boolean z, aa = false;
+
+		int[] arreglo1;
+		int arreglo2[];
+		double[][] arreglo3;
+		float arreglo4[][];
+		boolean[] arreglo5 = new boolean[1];
+		char arreglo6[] = new char[var];
+		String[][] arreglo7 = new String[1][1];
+		String arreglo8[][] = new String[var][var];
+
+		asignacion1 = 0;
+		asignacion2 = 0.5;
+		asignacion3 = 'c';
+		asignacion4 = "linea";
+		asignacion5 = true;
+		asignacion6[0] = 0;
+		asignacion7[var] = "linea";
+		asignacion8[1][1] = 0;
+		asignacion9[var][var] = "linea";
+
+		b++;
+		c--;
+
+		j += 1;
+
+		if(a > 0)
+		{
+			int b = 1 + 2 + (3*2);
+		}
+		else
+		{
+			int b = 1 + 2 + (3*2);
+		}
+
+		switch(b)
+		{
+			case 2:
+			break;
+		}
+
+		for(int i = 0; i < a; i++)
+		{
+			int b = 1 + 2 + (3*2);
+		}
+
+		while(a<0)
+		{
+			int b = 1 + 2 + (3*2);
+		}
+
+	}
+}

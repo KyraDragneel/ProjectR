@@ -50,7 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analisis\Gramaticas\gramaticaConcatenacion.cs" />
+    <Compile Include="Analisis\Gramaticas\gramaticaExpresion.cs" />
     <Compile Include="Analisis\Gramaticas\gramaticaJava.cs" />
+    <Compile Include="Analisis\Semantica\comprobacionConcatenacion.cs" />
+    <Compile Include="Analisis\Semantica\comprobacionExpresion.cs" />
     <Compile Include="Analisis\Semantica\deteccionVariables.cs" />
     <Compile Include="Analisis\Semantica\elementoToken.cs" />
     <Compile Include="Analisis\Semantica\elementoVariable.cs" />
@@ -90,8 +94,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="CodigosFuente\" />
+    <Content Include="CodigosFuente\ejemploVariables.txt" />
+    <Content Include="CodigosFuente\pruebaConcatenaciones.txt" />
+    <Content Include="CodigosFuente\pruebaExpresiones.txt" />
+    <Content Include="CodigosFuente\pruebasVariables.txt" />
+    <Content Include="CodigosFuente\PruebaValores.txt" />
+    <Content Include="CodigosFuente\testeoDeDeclaracionesArreglos.txt" />
+    <Content Include="CodigosFuente\testeoDeDeclaracionesVariables.txt" />
+    <Content Include="CodigosFuente\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

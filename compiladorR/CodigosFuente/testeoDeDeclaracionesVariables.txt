@@ -1,0 +1,14 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+	public static void main(String[] args)
+	{
+		int a = 0;
+		a = 1;
+		b = 0;
+		String a = "chabelo";
+		a = "sigue vivo";
+		a = "no se que mas poner";
+	}
+}

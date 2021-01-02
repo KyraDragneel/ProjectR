@@ -1,0 +1,23 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+
+	public static void main(String[] args)
+	{
+
+		String s1 = "hola";
+		String s2 = "hola" + s1;
+		String s3 = "hola" + s1 + "hola";
+		String s4 = s2 + "hola" + s1;
+		String s5 = s1 + "hola";
+		String s6 = "hola" + (1+2+3);
+		int i1 = 0;
+		String s7 = (1+i1+2) + "hola";
+		String[][] arreglo1 = new String[1][1];
+		String s9 = "hola" + arreglo1[0][0] + "hola";
+		String s10 = arreglo1[0][0];
+
+	}
+
+}

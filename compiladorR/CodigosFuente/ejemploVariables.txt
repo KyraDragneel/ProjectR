@@ -1,0 +1,35 @@
+﻿public class miClase
+{
+	public static void main(string[] args)
+	{
+		int i = 0, j, k, l;
+		int i = 0;
+		int j;
+		int j = i;
+		string p;
+		string t, u = "Hola, usuario";
+		string v = "Hola mundo";
+		string v = u;
+		char w;
+		char z = 'm';
+		char a = ',', b = ',';
+		char c, d;
+		char c = a;
+		float t = 4.5;
+		float t, p = 4.5;
+		float t = p;
+		double f = 45.5;
+		double p = 34.4, t;
+		double t = f;
+		boolean b = true;
+		boolean c , f = false;
+		boolean c = f;
+
+		a = 0;
+		b = 'c';
+		c = 0.5;
+		d = 3.5;
+		e = "Ward";
+		f = true;
+	}
+}
