@@ -22,6 +22,7 @@ namespace compiladorR
 
         private void run_Click(object sender, EventArgs e)
         {
+            areaResultado.Clear();
             List<elementoToken> lista = new List<elementoToken>();
             List<elementoVariable> variables = new List<elementoVariable>();
             List<string> listaErrores = new List<string>();
@@ -39,8 +40,7 @@ namespace compiladorR
                 {
                     Console.WriteLine(arbol.ParserMessages[i].Message);
                 }
-                MessageBox.Show("Error");
-                areaResultado.AppendText("Su codigo contiene errores" + "\n");
+                areaResultado.AppendText("Por favor revise su codigo" + "\n");
             }
             else
             {
@@ -57,11 +57,11 @@ namespace compiladorR
 
                 variables = deteccionVariables.detectarVariables(lista);
 
-
+                /*
                 for (int i = 0; i < variables.Count; i++)
                 {
-                    //Console.WriteLine((i + 1) + "- Tipo: " + variables[i].getTipo() + " Nombre: " + variables[i].getNombre() + " Valor: " + variables[i].getValor() + " Linea: " + variables[i].getLinea());
-                }
+                    Console.WriteLine((i + 1) + "- Tipo: " + variables[i].getTipo() + " Nombre: " + variables[i].getNombre() + " Valor: " + variables[i].getValor() + " Linea: " + variables[i].getLinea());
+                }*/
 
                 auxiliarErrores = verificarDeclaracionVariables.verificarDeclaracion(variables);
 
@@ -90,7 +90,23 @@ namespace compiladorR
 
                 auxiliarErrores.Clear();
 
-                areaResultado.AppendText("Analis correcto" + "\n");
+                auxiliarErrores = comprobacionConcatenacion.comprobarConcatenacion(variables);
+                
+                for (int i = 0; i < auxiliarErrores.Count; i++)
+                {
+                    listaErrores.Add(auxiliarErrores[i]);
+                }
+
+                auxiliarErrores.Clear();
+
+                auxiliarErrores = comprobacionExpresion.comprobarExpresion(variables);
+
+                for (int i = 0; i < auxiliarErrores.Count; i++)
+                {
+                    listaErrores.Add(auxiliarErrores[i]);
+                }
+
+                auxiliarErrores.Clear();
 
                 for (int i = 0; i < listaErrores.Count; i++)
                 {

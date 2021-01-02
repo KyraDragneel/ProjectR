@@ -10,3 +10,15 @@ C:\Users\Marco\Documents\Proyectos Visual Studio\compiladorR\compiladorR\bin\Deb
 C:\Users\Marco\Documents\Proyectos Visual Studio\compiladorR\compiladorR\obj\Debug\compiladorR.csproj.CopyComplete
 C:\Users\Marco\Documents\Proyectos Visual Studio\compiladorR\compiladorR\obj\Debug\compiladorR.exe
 C:\Users\Marco\Documents\Proyectos Visual Studio\compiladorR\compiladorR\obj\Debug\compiladorR.pdb
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\compiladorR.exe.config
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\compiladorR.exe
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\compiladorR.pdb
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\Irony.dll
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.csprojAssemblyReference.cache
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.Form1.resources
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.Properties.Resources.resources
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.GenerateResource.cache
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.CoreCompileInputs.cache
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.CopyComplete
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.exe
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.pdb

@@ -1,0 +1,158 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+
+	public static void main(String[] args)
+	{
+
+		int i;
+		int i = 2;
+		i = 2;
+		int i = 2, j = 3;
+		int i, j = 2;
+		int i = 2, j;
+
+		int i = a * (b + c) + c * (d + e);
+		int i = "Hola Mundo " + variable + " veces";
+		int i = (a * (b + c)) - 2 * a + (4 * d - f);
+		int i = a % 2 / b - c * a * y + 18 / c - 3 * h;
+		int i = (a + b + c + d + e)%5;
+		int i =  3 + 6 * 14;
+		int i =  3.5 * 2 + 7 - 3 * 2 / 2.0;
+		char i = 'a';
+		String i = null;
+		boolean i = true;
+		
+		Scanner leer = new Scanner(System.in);
+		int i = leer.nextInt();
+		i = leer.next();
+		System.out.println("Hola mundo");
+
+		i++;
+		i--;
+
+		int[] arreglo;
+		String[][] arreglo = new String[2][2];
+		arreglo[0] = 0;
+		arreglo[0][0] = "Hola mundo";
+		double[] arreglo = new double[nombre];
+		char[][] arreglo;
+
+		int arreglo[];
+		String arreglo[][] = new String[2][2];
+		double arreglo[] = new double[nombre];
+		char arreglo[][];
+
+		if(true)
+		{
+			int i;
+			int i = 2;
+			i = 2;
+			int i = 2, j = 3;
+			int i, j = 2;
+			int i = 2, j;
+		}
+		else
+		{
+			Scanner leer = new Scanner(System.in);
+			int improve = leer.nextInt();
+			i = leer.next();
+			System.out.println("Hola mundo");
+		}
+
+		if( ( (2>1) && (3==3) ) && true)
+		{
+			int i;
+			int i = 2;
+			i = 2;
+			int i = 2, j = 3;
+			int i, j = 2;
+			int i = 2, j;
+		}
+		else
+		{
+			Scanner leer = new Scanner(System.in);
+			int i = leer.nextInt();
+			i = leer.next();
+			System.out.println("Hola mundo");
+		}
+
+		if( ( (2>1) && (3==3) ) && true)
+		{
+			int i;
+			int i = 2;
+			i = 2;
+			int i = 2, j = 3;
+			int i, j = 2;
+			int i = 2, j;
+		}
+		else if(7 >= 6)
+		{
+			Scanner leer = new Scanner(System.in);
+			int i = leer.nextInt();
+			i = leer.next();
+			System.out.println("Hola mundo");
+		}
+		else
+		{
+			int i = a * (b + c) + c * (d + e);
+			int i = "Hola Mundo " + variable + " veces";
+			int i = (a * (b + c)) - 2 * a + (4 * d - f);
+			int i = a % 2 / b - c * a * y + 18 / c - 3 * h;
+			int i = (a + b + c + d + e)%5;
+			int i =  3 + 6 * 14;
+			int i =  3.5 * 2 + 7 - 3 * 2 / 2.0;
+			char i = 'a';
+			String i = null;
+			boolean i = true;
+		}
+
+		switch(variable)
+		{
+			case 1:
+
+			case 'a':
+			System.out.println("Hola mundo");
+
+			case "asd":
+			System.out.println("Hola mundo");
+			break;
+
+			default:
+			System.out.println("Hola mundo");
+		}
+
+		for(int i = 0; i < variable; i++)
+		{
+			System.out.println("Hola mundo");
+		}
+
+		for(i = 0; i > variable; i += 1)
+		{
+			System.out.println("Hola mundo");
+		}
+
+		for(i = 0; i > variable; i = i + 1)
+		{
+			System.out.println("Hola mundo");
+		}
+
+		while(true)
+		{
+			System.out.println("Hola mundo");
+		}
+
+		while(variable < 10)
+		{
+			System.out.println("Hola mundo");
+		}
+
+		do
+		{
+			System.out.println("Hola mundo");
+		}
+		while(true);
+	}
+
+}

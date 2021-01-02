@@ -86,9 +86,10 @@ namespace compiladorR.Analisis.Semantica
                                 }
 
                             }
-                            else if (!Int32.TryParse(variables[i].getValor(), out residuo) && variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\""))
+                            else if (!Int32.TryParse(variables[i].getValor(), out residuo) && variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !variables[i].getValor().Contains("+") && !variables[i].getValor().Contains("-") && !variables[i].getValor().Contains("*") && !variables[i].getValor().Contains("/") && !variables[i].getValor().Contains("%"))
                             {
-
+                                
+                                Console.WriteLine("Lo envie desde aqui: "+variables[i].getLinea());
                                 string auxiliarValor = variables[i].getValor().Split('[')[0].Replace(" ", "");
 
                                 string tipoBusqueda = "";
@@ -161,8 +162,9 @@ namespace compiladorR.Analisis.Semantica
                                     }
                                 }
                             }
-                            else if (variables[i].getValor().Contains("["))
+                            else if (variables[i].getValor().Contains("[") && !variables[i].getValor().Contains("\""))
                             {
+                                Console.WriteLine("entre aqui");
                                 //Queda pendiente si el espacio existe en el arreglo
                                 string auxiliarValor = variables[i].getValor().Split('[')[0].Replace(" ", "");
 
@@ -189,6 +191,8 @@ namespace compiladorR.Analisis.Semantica
                             }
                             else
                             {
+                                /*
+                                Console.WriteLine("Entre en este caso");
                                 string cadena = variables[i].getValor();
                                 int contador = 0;
                                 string[] variablesContenidas;
@@ -388,7 +392,7 @@ namespace compiladorR.Analisis.Semantica
                                 else
                                 {
                                     //Nothing
-                                }
+                                }*/
                             }
 
                             #endregion
@@ -434,7 +438,7 @@ namespace compiladorR.Analisis.Semantica
                                 }
 
                             }
-                            else if (!float.TryParse(variables[i].getValor(), out residuoF) && variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\""))
+                            else if (!float.TryParse(variables[i].getValor(), out residuoF) && variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !variables[i].getValor().Contains("+") && !variables[i].getValor().Contains("-") && !variables[i].getValor().Contains("*") && !variables[i].getValor().Contains("/") && !variables[i].getValor().Contains("%"))
                             {
 
                                 string auxiliarValor = variables[i].getValor().Split('[')[0].Replace(" ", "");
@@ -513,7 +517,7 @@ namespace compiladorR.Analisis.Semantica
                                 }
 
                             }
-                            else if (!double.TryParse(variables[i].getValor(), out residuoD) && variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\""))
+                            else if (!double.TryParse(variables[i].getValor(), out residuoD) && variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !variables[i].getValor().Contains("+") && !variables[i].getValor().Contains("-") && !variables[i].getValor().Contains("*") && !variables[i].getValor().Contains("/") && !variables[i].getValor().Contains("%"))
                             {
 
                                 string auxiliarValor = variables[i].getValor().Split('[')[0].Replace(" ", "");

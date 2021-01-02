@@ -395,9 +395,9 @@ namespace compiladorR.Analisis.Gramaticas
                 parentesisAbrir_ + expresion + parentesisCerrar_ |
                 parentesisAbrir_ + expresion + parentesisCerrar_ + operadorAritmetico + expresion |
                 nombre + corcheteAbrir_ + expresion + corcheteCerrar_ |
-                nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + expresion |
+                nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + operadorAritmetico + expresion |
                 nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ |
-                nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ + expresion |
+                nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ + operadorAritmetico + expresion |
                 new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ |
                 new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_;
 

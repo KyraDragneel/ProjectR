@@ -16,7 +16,7 @@ namespace compiladorR.Analisis.Semantica
 
             for (int i = ignorarInicio(tokens); i < tokens.Count; i++)
             {
-                if (tokens[i].getNombre().Equals("int") || tokens[i].getNombre().Equals("float") || tokens[i].getNombre().Equals("double") || tokens[i].getNombre().Equals("String") || tokens[i].getNombre().Equals("char") || tokens[i].getNombre().Equals("boolean"))
+                if (tokens[i].getNombre().Equals("Scanner") || tokens[i].getNombre().Equals("int") || tokens[i].getNombre().Equals("float") || tokens[i].getNombre().Equals("double") || tokens[i].getNombre().Equals("String") || tokens[i].getNombre().Equals("char") || tokens[i].getNombre().Equals("boolean"))
                 {
                     for (int j = i + 1; j < tokens.Count; j++)
                     {
@@ -92,7 +92,7 @@ namespace compiladorR.Analisis.Semantica
                     }
                     for (int j = i; j < tokens.Count; j++)
                     {
-                        if (tokens[j].getNombre().Equals(";"))
+                        if (tokens[j].getNombre().Equals(")"))
                         {
                             variables.Add(evaluarAsignacion(obtenerTokensLinea(tokens, i, j)));
 
