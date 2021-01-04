@@ -1,5 +1,6 @@
 ﻿using compiladorR.Analisis.Gramaticas;
 using compiladorR.Analisis.Semantica;
+using compiladorR.Compilacion;
 using Irony.Parsing;
 using System;
 using System.Collections.Generic;
@@ -110,9 +111,34 @@ namespace compiladorR
 
                 auxiliarErrores.Clear();
 
-                for (int i = 0; i < listaErrores.Count; i++)
+                auxiliarErrores = comprobacionScanner.comprobarScanner(lista, variables);
+
+                for (int i = 0; i < auxiliarErrores.Count; i++)
                 {
-                    areaResultado.AppendText(listaErrores[i] + "\n");
+                    listaErrores.Add(auxiliarErrores[i]);
+                }
+
+                auxiliarErrores.Clear();
+
+                if (listaErrores.Count == 0)
+                {
+                    List<string> instrucciones = new List<string>();
+
+                    compiladorInstrucciones.compilarInstrucciones(lista);
+
+                    for (int i = 0; i < instrucciones.Count; i++)
+                    {
+                        Console.WriteLine(instrucciones[i]);
+                    }
+                }
+                else
+                {
+                    listaErrores = ordenacionErrores.ordenarErrores(listaErrores);
+
+                    for (int i = 0; i < listaErrores.Count; i++)
+                    {
+                        areaResultado.AppendText(listaErrores[i] + "\n");
+                    }
                 }
             }
         }

@@ -17,6 +17,7 @@ namespace compiladorR.Analisis.Semantica
             string auxiliarTipo;
             string errorAsignacion = "Error: El valor asignado no pertenece al tipo esperado. Linea: ";
             string errorDeclaracion = "Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
+            string errorAlmacenado = "Error: La variable asignada no ha sido inicializada. Linea: ";
             int residuo = 0;
             float residuoF = 0;
             double residuoD = 0;
@@ -57,7 +58,6 @@ namespace compiladorR.Analisis.Semantica
                             }
                             else if (!Int32.TryParse(variables[i].getValor(), out residuo) && Regex.IsMatch(variables[i].getValor(), "([a-zA-Z]|_*[a-zA-Z]){1}[a-zA-Z0-9_]*") && !variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !Regex.IsMatch(variables[i].getValor(), "\'[^\']\'") && !variables[i].getValor().Equals("true") && !variables[i].getValor().Equals("false"))
                             {
-
                                 if (variables[i].getValor().Contains("(") || variables[i].getValor().Contains(")") || variables[i].getValor().Contains("+") || variables[i].getValor().Contains("-") || variables[i].getValor().Contains("*") || variables[i].getValor().Contains("/"))
                                 {
                                     //Console.WriteLine("Es una expresion con variables: " + variables[i].getLinea());
@@ -66,12 +66,19 @@ namespace compiladorR.Analisis.Semantica
                                 {
 
                                     string tipoBusqueda = "";
+                                    string valorAlmacenado = "";
 
                                     for (int j = i - 1; j >= 0; j--)
                                     {
                                         if (variables[i].getValor().Equals(variables[j].getNombre()))
                                         {
                                             tipoBusqueda = variables[j].getTipo();
+
+                                            if (!variables[j].getValor().Equals(""))
+                                            {
+                                                valorAlmacenado = variables[j].getValor();
+                                            }
+
                                         }
                                     }
 
@@ -83,13 +90,17 @@ namespace compiladorR.Analisis.Semantica
                                     {
                                         errores.Add(errorAsignacion + variables[i].getLinea());
                                     }
+
+                                    if (valorAlmacenado.Equals(""))
+                                    {
+                                        errores.Add(errorAlmacenado + variables[i].getLinea());
+                                    }
                                 }
 
                             }
                             else if (!Int32.TryParse(variables[i].getValor(), out residuo) && variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !variables[i].getValor().Contains("+") && !variables[i].getValor().Contains("-") && !variables[i].getValor().Contains("*") && !variables[i].getValor().Contains("/") && !variables[i].getValor().Contains("%"))
                             {
-                                
-                                Console.WriteLine("Lo envie desde aqui: "+variables[i].getLinea());
+
                                 string auxiliarValor = variables[i].getValor().Split('[')[0].Replace(" ", "");
 
                                 string tipoBusqueda = "";
@@ -143,12 +154,18 @@ namespace compiladorR.Analisis.Semantica
                                 else
                                 {
                                     string tipoBusqueda = "";
+                                    string valorAlmacenado = "";
 
                                     for (int j = i - 1; j >= 0; j--)
                                     {
                                         if (variables[i].getValor().Equals(variables[j].getNombre()))
                                         {
                                             tipoBusqueda = variables[j].getTipo();
+
+                                            if (!variables[j].getValor().Equals(""))
+                                            {
+                                                valorAlmacenado = variables[j].getValor();
+                                            }
                                         }
                                     }
 
@@ -160,11 +177,15 @@ namespace compiladorR.Analisis.Semantica
                                     {
                                         errores.Add(errorAsignacion + variables[i].getLinea());
                                     }
+
+                                    if (valorAlmacenado.Equals(""))
+                                    {
+                                        errores.Add(errorAlmacenado + variables[i].getLinea());
+                                    }
                                 }
                             }
                             else if (variables[i].getValor().Contains("[") && !variables[i].getValor().Contains("\""))
                             {
-                                Console.WriteLine("entre aqui");
                                 //Queda pendiente si el espacio existe en el arreglo
                                 string auxiliarValor = variables[i].getValor().Split('[')[0].Replace(" ", "");
 
@@ -409,7 +430,6 @@ namespace compiladorR.Analisis.Semantica
                             }
                             else if (!float.TryParse(variables[i].getValor(), out residuoF) && Regex.IsMatch(variables[i].getValor(), "([a-zA-Z]|_*[a-zA-Z]){1}[a-zA-Z0-9_]*") && !variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !Regex.IsMatch(variables[i].getValor(), "\'[^\']\'") && !variables[i].getValor().Equals("true") && !variables[i].getValor().Equals("false"))
                             {
-
                                 if (variables[i].getValor().Contains("(") || variables[i].getValor().Contains(")") || variables[i].getValor().Contains("+") || variables[i].getValor().Contains("-") || variables[i].getValor().Contains("*") || variables[i].getValor().Contains("/"))
                                 {
                                     //Console.WriteLine("Es una expresion con variables: " + variables[i].getLinea());
@@ -418,12 +438,18 @@ namespace compiladorR.Analisis.Semantica
                                 {
 
                                     string tipoBusqueda = "";
+                                    string valorAlmacenado = "";
 
                                     for (int j = i - 1; j >= 0; j--)
                                     {
                                         if (variables[i].getValor().Equals(variables[j].getNombre()))
                                         {
                                             tipoBusqueda = variables[j].getTipo();
+
+                                            if (!variables[j].getValor().Equals(""))
+                                            {
+                                                valorAlmacenado = variables[j].getValor();
+                                            }
                                         }
                                     }
 
@@ -434,6 +460,11 @@ namespace compiladorR.Analisis.Semantica
                                     else if (!tipoBusqueda.Equals(auxiliarTipo))
                                     {
                                         errores.Add(errorAsignacion + variables[i].getLinea());
+                                    }
+
+                                    if (valorAlmacenado.Equals(""))
+                                    {
+                                        errores.Add(errorAlmacenado + variables[i].getLinea());
                                     }
                                 }
 
@@ -497,12 +528,18 @@ namespace compiladorR.Analisis.Semantica
                                 {
 
                                     string tipoBusqueda = "";
+                                    string valorAlmacenado = "";
 
                                     for (int j = i - 1; j >= 0; j--)
                                     {
                                         if (variables[i].getValor().Equals(variables[j].getNombre()))
                                         {
                                             tipoBusqueda = variables[j].getTipo();
+
+                                            if (!variables[j].getValor().Equals(""))
+                                            {
+                                                valorAlmacenado = variables[j].getValor();
+                                            }
                                         }
                                     }
 
@@ -513,6 +550,11 @@ namespace compiladorR.Analisis.Semantica
                                     else if (!tipoBusqueda.Equals(auxiliarTipo))
                                     {
                                         errores.Add(errorAsignacion + variables[i].getLinea());
+                                    }
+
+                                    if (valorAlmacenado.Equals(""))
+                                    {
+                                        errores.Add(errorAlmacenado + variables[i].getLinea());
                                     }
                                 }
 
@@ -567,12 +609,18 @@ namespace compiladorR.Analisis.Semantica
                             else if (!variables[i].getValor().Equals("true") && !variables[i].getValor().Equals("false") && Regex.IsMatch(variables[i].getValor(), "([a-zA-Z]|_*[a-zA-Z]){1}[a-zA-Z0-9_]*") && !variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\""))
                             {
                                 string tipoBusqueda = "";
+                                string valorAlmacenado = "";
 
                                 for (int j = i - 1; j >= 0; j--)
                                 {
                                     if (variables[i].getValor().Equals(variables[j].getNombre()))
                                     {
                                         tipoBusqueda = variables[j].getTipo();
+
+                                        if (!variables[j].getValor().Equals(""))
+                                        {
+                                            valorAlmacenado = variables[j].getValor();
+                                        }
                                     }
                                 }
 
@@ -583,6 +631,11 @@ namespace compiladorR.Analisis.Semantica
                                 else if (!tipoBusqueda.Equals(auxiliarTipo))
                                 {
                                     errores.Add(errorAsignacion + variables[i].getLinea());
+                                }
+
+                                if (valorAlmacenado.Equals(""))
+                                {
+                                    errores.Add(errorAlmacenado + variables[i].getLinea());
                                 }
                             }
                             else if (variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\""))
@@ -630,12 +683,18 @@ namespace compiladorR.Analisis.Semantica
                             if (Regex.IsMatch(variables[i].getValor(), "([a-zA-Z]|_*[a-zA-Z]){1}[a-zA-Z0-9_]*") && !Regex.IsMatch(variables[i].getValor(), "\'[^\']\'") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !variables[i].getValor().Equals("true") && !variables[i].getValor().Equals("false") && !variables[i].getValor().Contains("["))
                             {
                                 string tipoBusqueda = "";
+                                string valorAlmacenado = "";
 
                                 for (int j = i - 1; j >= 0; j--)
                                 {
                                     if (variables[i].getValor().Equals(variables[j].getNombre()))
                                     {
                                         tipoBusqueda = variables[j].getTipo();
+
+                                        if (!variables[j].getValor().Equals(""))
+                                        {
+                                            valorAlmacenado = variables[j].getValor();
+                                        }
                                     }
                                 }
 
@@ -646,6 +705,11 @@ namespace compiladorR.Analisis.Semantica
                                 else if (!tipoBusqueda.Equals(auxiliarTipo))
                                 {
                                     errores.Add(errorAsignacion + variables[i].getLinea());
+                                }
+
+                                if (valorAlmacenado.Equals(""))
+                                {
+                                    errores.Add(errorAlmacenado + variables[i].getLinea());
                                 }
                             }
                             else if (variables[i].getValor().Contains("["))

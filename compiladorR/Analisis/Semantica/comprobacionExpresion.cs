@@ -15,6 +15,8 @@ namespace compiladorR.Analisis.Semantica
             List<string> errores = new List<string>();
             string errorDeclaracion = "Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
             string errorAsignacion = "Error: El valor asignado no pertenece al tipo esperado. Linea: ";
+            string errorAnalisis = "Error: El valor de la variable asignada no ha podido ser analizado. Linea: ";
+            string errorAlmacenado = "Error: La variable asignada no ha sido inicializada. Linea: ";
 
             for (int i = 0; i < variables.Count; i++)
             {
@@ -30,10 +32,9 @@ namespace compiladorR.Analisis.Semantica
 
                     if (arbol.Root == null)
                     {
-                        Console.WriteLine("Ocurrio algo con la expresion: " + variables[i].getLinea());
                         for (int j = 0; j < arbol.ParserMessages.Count; j++)
                         {
-                            Console.WriteLine(arbol.ParserMessages[j].Message);
+                            errores.Add(errorAnalisis + variables[i].getLinea());
                         }
                     }
                     else
@@ -51,12 +52,12 @@ namespace compiladorR.Analisis.Semantica
 
                         for (int j = 0; j < lista.Count; j++)
                         {
-                            Console.WriteLine("Nombre: " + lista[j].getNombre() + " Tipo: " + lista[j].getTipo() + " Linea: " + variables[i].getLinea());
 
                             if (lista[j].getTipo().Equals("id"))
                             {
                                 string tipo = "";
                                 string tipoActual = variables[i].getTipo();
+                                string valorAlmacenado = "";
 
                                 for (int k = i - 1; k >= 0; k--)
                                 {
@@ -73,9 +74,11 @@ namespace compiladorR.Analisis.Semantica
                                 {
                                     if (lista[j].getNombre().Equals(variables[k].getNombre()))
                                     {
-                                        if (!variables[k].getTipo().Equals(""))
+                                        tipo = variables[k].getTipo();
+
+                                        if (!variables[k].getValor().Equals(""))
                                         {
-                                            tipo = variables[k].getTipo();
+                                            valorAlmacenado = variables[k].getValor();
                                         }
                                     }
                                 }
@@ -83,12 +86,15 @@ namespace compiladorR.Analisis.Semantica
                                 if (tipo.Equals(""))
                                 {
                                     errores.Add(errorDeclaracion + variables[i].getLinea());
-                                    Console.WriteLine("Error");
                                 }
-                                else if(!tipoActual.Replace("[","").Replace("]","").Equals(tipo.Replace("[", "").Replace("]", "")))
+                                else if (!tipoActual.Replace("[", "").Replace("]", "").Equals(tipo.Replace("[", "").Replace("]", "")))
                                 {
                                     errores.Add(errorAsignacion + variables[i].getLinea());
-                                    Console.WriteLine("Error");
+                                }
+
+                                if (valorAlmacenado.Equals(""))
+                                {
+                                    errores.Add(errorAlmacenado + variables[i].getLinea());
                                 }
                             }
                         }
