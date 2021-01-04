@@ -14,10 +14,12 @@ namespace compiladorR.Analisis.Semantica
         {
             List<string> errores = new List<string>();
             string errorDeclaracion = "Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
+            string errorAnalisis = "Error: El valor de la variable asignada no ha podido ser analizado. Linea: ";
+            string errorAlmacenado = "Error: La variable asignada no ha sido inicializada. Linea: ";
 
             for (int i = 0; i < variables.Count; i++)
             {
-                if(variables[i].getValor().Contains("\"") && variables[i].getValor().Contains("+"))
+                if (variables[i].getValor().Contains("\"") && variables[i].getValor().Contains("+"))
                 {
                     List<elementoToken> lista = new List<elementoToken>();
 
@@ -29,10 +31,9 @@ namespace compiladorR.Analisis.Semantica
 
                     if (arbol.Root == null)
                     {
-                        Console.WriteLine("Ocurrio algo con la concatenacion: "+variables[i].getLinea());
                         for (int j = 0; j < arbol.ParserMessages.Count; j++)
                         {
-                            Console.WriteLine(arbol.ParserMessages[j].Message);
+                            errores.Add(errorAnalisis + variables[i].getLinea());
                         }
                     }
                     else
@@ -48,32 +49,41 @@ namespace compiladorR.Analisis.Semantica
                             lista.Add(auxiliar);
                         }
 
-                        for(int j = 0; j < lista.Count; j++)
+                        for (int j = 0; j < lista.Count; j++)
                         {
-                            
+
                             if (lista[j].getTipo().Equals("id"))
                             {
                                 string tipo = "";
+                                string valorAlmacenado = "";
 
                                 for (int k = i - 1; k >= 0; k--)
-                                {                               
-                                    if(lista[j].getNombre().Equals(variables[k].getNombre()))
+                                {
+                                    if (lista[j].getNombre().Equals(variables[k].getNombre()))
                                     {
-                                        if(!variables[k].getTipo().Equals(""))
+
+                                        tipo = variables[k].getTipo();
+
+                                        if (!variables[k].getValor().Equals(""))
                                         {
-                                            tipo = variables[k].getTipo();
+                                            valorAlmacenado = variables[k].getValor();
                                         }
+
                                     }
                                 }
 
                                 if (tipo.Equals(""))
                                 {
                                     errores.Add(errorDeclaracion + variables[i].getLinea());
-                                    Console.WriteLine("Error");
+                                }
+
+                                if (valorAlmacenado.Equals(""))
+                                {
+                                    errores.Add(errorAlmacenado + variables[i].getLinea());
                                 }
                             }
                         }
-                        
+
                     }
                 }
             }
