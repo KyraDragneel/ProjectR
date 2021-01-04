@@ -15,6 +15,8 @@ namespace compiladorR
 {
     public partial class Form1 : Form
     {
+        private string addButtonFullPath = "C:\\Users\\maryf\\Desktop\\ProjectR\\recursos\\add.png";
+        private string closeButtonFullPath = "C:\\Users\\maryf\\Desktop\\ProjectR\\recursos\\cerrar.png";
         public Form1()
         {
             InitializeComponent();
@@ -114,5 +116,103 @@ namespace compiladorR
                 }
             }
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            menuArchivo.Renderer = new ToolStripProfessionalRenderer(new MenuColorTable());
+        }
+
+        private void Salir_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void Minimizar_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
+        }
+
+        private void Maximizar_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Maximized;
+            maximizar.Visible = false;
+            restaurar.Visible = true;
+        }
+
+        private void Restaurar_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+            restaurar.Visible = false;
+            maximizar.Visible = true;
+        }
+
+        private void AreaResultado_TextChanged(object sender, EventArgs e)
+        {
+            
+
+        }
+        
+        class MenuColorTable : ProfessionalColorTable
+        {
+            public MenuColorTable()
+            {
+                base.UseSystemColors = false;
+                
+            }
+            public override System.Drawing.Color MenuBorder
+            {
+                    get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override System.Drawing.Color MenuItemBorder
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuItemSelected
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuItemSelectedGradientBegin
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuItemSelectedGradientEnd
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuStripGradientBegin
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuStripGradientEnd
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color ToolStripDropDownBackground 
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color ToolStripBorder
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color ToolStripContentPanelGradientBegin
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuItemPressedGradientBegin 
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuItemPressedGradientMiddle
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+            public override Color MenuItemPressedGradientEnd
+            {
+                get { return Color.FromArgb(28, 23, 38); }
+            }
+
+        }
+
     }
 }

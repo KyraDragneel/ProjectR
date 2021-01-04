@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bunifu_UI_v1.5.3">
+      <HintPath>..\packages\bunifu\Bunifu_UI_v1.5.3.dll</HintPath>
+    </Reference>
     <Reference Include="Irony">
       <HintPath>..\packages\Irony.1.1.0\lib\net40\Irony.dll</HintPath>
     </Reference>
@@ -80,6 +83,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -104,6 +108,15 @@
     <Content Include="CodigosFuente\testeoDeDeclaracionesArreglos.txt" />
     <Content Include="CodigosFuente\testeoDeDeclaracionesVariables.txt" />
     <Content Include="CodigosFuente\TextFile1.txt" />
+    <None Include="Resources\icon-raccoon.png" />
+    <None Include="Resources\stop1.png" />
+    <None Include="Resources\run1.png" />
+    <None Include="Resources\stop.png" />
+    <None Include="Resources\run.png" />
+    <None Include="Resources\minimizar.png" />
+    <None Include="Resources\restaurar.png" />
+    <None Include="Resources\maximizar.png" />
+    <None Include="Resources\cerrar.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

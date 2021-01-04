@@ -22,3 +22,16 @@ C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\
 C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.CopyComplete
 C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.exe
 C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.pdb
+C:\Users\maryf\Desktop\ProjectR\compiladorR\bin\Debug\compiladorR.exe.config
+C:\Users\maryf\Desktop\ProjectR\compiladorR\bin\Debug\compiladorR.exe
+C:\Users\maryf\Desktop\ProjectR\compiladorR\bin\Debug\compiladorR.pdb
+C:\Users\maryf\Desktop\ProjectR\compiladorR\bin\Debug\Irony.dll
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.csprojAssemblyReference.cache
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.Form1.resources
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.Properties.Resources.resources
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.GenerateResource.cache
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.CoreCompileInputs.cache
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.CopyComplete
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.exe
+C:\Users\maryf\Desktop\ProjectR\compiladorR\obj\Debug\compiladorR.pdb
+C:\Users\maryf\Desktop\ProjectR\compiladorR\bin\Debug\Bunifu_UI_v1.5.3.dll
