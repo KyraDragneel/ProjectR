@@ -34,6 +34,11 @@
             this.areaResultado = new System.Windows.Forms.RichTextBox();
             this.panelSuperior = new System.Windows.Forms.Panel();
             this.nomArchivo = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.minimizar = new System.Windows.Forms.PictureBox();
+            this.restaurar = new System.Windows.Forms.PictureBox();
+            this.maximizar = new System.Windows.Forms.PictureBox();
+            this.salir = new System.Windows.Forms.PictureBox();
             this.menuArchivo = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.nuevoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,26 +46,21 @@
             this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelizquierdo = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.bunifuSeparator1 = new Bunifu.Framework.UI.BunifuSeparator();
-            this.moverVentana = new Bunifu.Framework.UI.BunifuDragControl(this.components);
-            this.bunifuGradientPanel1 = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.stop = new System.Windows.Forms.Button();
             this.run = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.minimizar = new System.Windows.Forms.PictureBox();
-            this.restaurar = new System.Windows.Forms.PictureBox();
-            this.maximizar = new System.Windows.Forms.PictureBox();
-            this.salir = new System.Windows.Forms.PictureBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.bunifuGradientPanel1 = new Bunifu.Framework.UI.BunifuGradientPanel();
+            this.bunifuSeparator1 = new Bunifu.Framework.UI.BunifuSeparator();
+            this.moverVentana = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.panelSuperior.SuspendLayout();
-            this.menuArchivo.SuspendLayout();
-            this.panelizquierdo.SuspendLayout();
-            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.restaurar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maximizar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.salir)).BeginInit();
+            this.menuArchivo.SuspendLayout();
+            this.panelizquierdo.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // entrada
@@ -76,7 +76,7 @@
             this.entrada.Name = "entrada";
             this.entrada.Size = new System.Drawing.Size(1239, 493);
             this.entrada.TabIndex = 0;
-            this.entrada.Text = "/*  Welcome!!  */";
+            this.entrada.Text = "";
             // 
             // areaResultado
             // 
@@ -89,6 +89,7 @@
             this.areaResultado.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.areaResultado.Location = new System.Drawing.Point(21, 522);
             this.areaResultado.Name = "areaResultado";
+            this.areaResultado.ReadOnly = true;
             this.areaResultado.Size = new System.Drawing.Size(1239, 187);
             this.areaResultado.TabIndex = 1;
             this.areaResultado.Text = "";
@@ -118,9 +119,68 @@
             this.nomArchivo.ForeColor = System.Drawing.SystemColors.Control;
             this.nomArchivo.Location = new System.Drawing.Point(634, 11);
             this.nomArchivo.Name = "nomArchivo";
-            this.nomArchivo.Size = new System.Drawing.Size(126, 17);
+            this.nomArchivo.Size = new System.Drawing.Size(58, 17);
             this.nomArchivo.TabIndex = 6;
-            this.nomArchivo.Text = "Nombre del Archivo";
+            this.nomArchivo.Text = "Sin titulo";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::compiladorR.Properties.Resources.icon_raccoon;
+            this.pictureBox1.Location = new System.Drawing.Point(9, 5);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(28, 32);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            // 
+            // minimizar
+            // 
+            this.minimizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.minimizar.Image = global::compiladorR.Properties.Resources.minimizar;
+            this.minimizar.Location = new System.Drawing.Point(1252, 5);
+            this.minimizar.Name = "minimizar";
+            this.minimizar.Size = new System.Drawing.Size(14, 14);
+            this.minimizar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.minimizar.TabIndex = 3;
+            this.minimizar.TabStop = false;
+            this.minimizar.Click += new System.EventHandler(this.Minimizar_Click);
+            // 
+            // restaurar
+            // 
+            this.restaurar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.restaurar.Image = global::compiladorR.Properties.Resources.restaurar;
+            this.restaurar.Location = new System.Drawing.Point(1283, 5);
+            this.restaurar.Name = "restaurar";
+            this.restaurar.Size = new System.Drawing.Size(14, 14);
+            this.restaurar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.restaurar.TabIndex = 2;
+            this.restaurar.TabStop = false;
+            this.restaurar.Visible = false;
+            this.restaurar.Click += new System.EventHandler(this.Restaurar_Click);
+            // 
+            // maximizar
+            // 
+            this.maximizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.maximizar.Image = global::compiladorR.Properties.Resources.maximizar;
+            this.maximizar.Location = new System.Drawing.Point(1283, 5);
+            this.maximizar.Name = "maximizar";
+            this.maximizar.Size = new System.Drawing.Size(14, 14);
+            this.maximizar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.maximizar.TabIndex = 1;
+            this.maximizar.TabStop = false;
+            this.maximizar.Click += new System.EventHandler(this.Maximizar_Click);
+            // 
+            // salir
+            // 
+            this.salir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.salir.Image = global::compiladorR.Properties.Resources.cerrar;
+            this.salir.Location = new System.Drawing.Point(1312, 5);
+            this.salir.Name = "salir";
+            this.salir.Size = new System.Drawing.Size(14, 14);
+            this.salir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.salir.TabIndex = 0;
+            this.salir.TabStop = false;
+            this.salir.Click += new System.EventHandler(this.Salir_Click);
             // 
             // menuArchivo
             // 
@@ -189,6 +249,33 @@
             this.panelizquierdo.Size = new System.Drawing.Size(45, 741);
             this.panelizquierdo.TabIndex = 4;
             // 
+            // stop
+            // 
+            this.stop.BackgroundImage = global::compiladorR.Properties.Resources.stop1;
+            this.stop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.stop.FlatAppearance.BorderSize = 0;
+            this.stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.stop.Location = new System.Drawing.Point(17, 42);
+            this.stop.Name = "stop";
+            this.stop.Size = new System.Drawing.Size(14, 16);
+            this.stop.TabIndex = 3;
+            this.stop.UseVisualStyleBackColor = true;
+            this.stop.Click += new System.EventHandler(this.stop_Click);
+            // 
+            // run
+            // 
+            this.run.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.run.BackgroundImage = global::compiladorR.Properties.Resources.run1;
+            this.run.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.run.FlatAppearance.BorderSize = 0;
+            this.run.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.run.Location = new System.Drawing.Point(16, 13);
+            this.run.Name = "run";
+            this.run.Size = new System.Drawing.Size(16, 16);
+            this.run.TabIndex = 2;
+            this.run.UseVisualStyleBackColor = false;
+            this.run.Click += new System.EventHandler(this.run_Click);
+            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -203,6 +290,22 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1284, 741);
             this.panel3.TabIndex = 5;
+            // 
+            // bunifuGradientPanel1
+            // 
+            this.bunifuGradientPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.bunifuGradientPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel1.BackgroundImage")));
+            this.bunifuGradientPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bunifuGradientPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.bunifuGradientPanel1.GradientBottomLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
+            this.bunifuGradientPanel1.GradientBottomRight = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
+            this.bunifuGradientPanel1.GradientTopLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
+            this.bunifuGradientPanel1.GradientTopRight = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(230)))), ((int)(((byte)(71)))));
+            this.bunifuGradientPanel1.Location = new System.Drawing.Point(0, 715);
+            this.bunifuGradientPanel1.Name = "bunifuGradientPanel1";
+            this.bunifuGradientPanel1.Quality = 10;
+            this.bunifuGradientPanel1.Size = new System.Drawing.Size(1284, 26);
+            this.bunifuGradientPanel1.TabIndex = 3;
             // 
             // bunifuSeparator1
             // 
@@ -224,107 +327,6 @@
             this.moverVentana.TargetControl = this.panelSuperior;
             this.moverVentana.Vertical = true;
             // 
-            // bunifuGradientPanel1
-            // 
-            this.bunifuGradientPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.bunifuGradientPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel1.BackgroundImage")));
-            this.bunifuGradientPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuGradientPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.bunifuGradientPanel1.GradientBottomLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
-            this.bunifuGradientPanel1.GradientBottomRight = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
-            this.bunifuGradientPanel1.GradientTopLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
-            this.bunifuGradientPanel1.GradientTopRight = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(230)))), ((int)(((byte)(71)))));
-            this.bunifuGradientPanel1.Location = new System.Drawing.Point(0, 715);
-            this.bunifuGradientPanel1.Name = "bunifuGradientPanel1";
-            this.bunifuGradientPanel1.Quality = 10;
-            this.bunifuGradientPanel1.Size = new System.Drawing.Size(1284, 26);
-            this.bunifuGradientPanel1.TabIndex = 3;
-            // 
-            // stop
-            // 
-            this.stop.BackgroundImage = global::compiladorR.Properties.Resources.stop1;
-            this.stop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.stop.FlatAppearance.BorderSize = 0;
-            this.stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.stop.Location = new System.Drawing.Point(17, 42);
-            this.stop.Name = "stop";
-            this.stop.Size = new System.Drawing.Size(14, 16);
-            this.stop.TabIndex = 3;
-            this.stop.UseVisualStyleBackColor = true;
-            // 
-            // run
-            // 
-            this.run.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.run.BackgroundImage = global::compiladorR.Properties.Resources.run1;
-            this.run.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.run.FlatAppearance.BorderSize = 0;
-            this.run.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.run.Location = new System.Drawing.Point(16, 13);
-            this.run.Name = "run";
-            this.run.Size = new System.Drawing.Size(16, 16);
-            this.run.TabIndex = 2;
-            this.run.UseVisualStyleBackColor = false;
-            this.run.Click += new System.EventHandler(this.run_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::compiladorR.Properties.Resources.icon_raccoon;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 5);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(28, 32);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
-            // 
-            // minimizar
-            // 
-            this.minimizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.minimizar.Image = global::compiladorR.Properties.Resources.minimizar;
-            this.minimizar.Location = new System.Drawing.Point(1252, 5);
-            this.minimizar.Name = "minimizar";
-            this.minimizar.Size = new System.Drawing.Size(14, 14);
-            this.minimizar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.minimizar.TabIndex = 3;
-            this.minimizar.TabStop = false;
-            this.minimizar.Click += new System.EventHandler(this.Minimizar_Click);
-            // 
-            // restaurar
-            // 
-            this.restaurar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.restaurar.Image = global::compiladorR.Properties.Resources.restaurar;
-            this.restaurar.Location = new System.Drawing.Point(1283, 5);
-            this.restaurar.Name = "restaurar";
-            this.restaurar.Size = new System.Drawing.Size(14, 14);
-            this.restaurar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.restaurar.TabIndex = 2;
-            this.restaurar.TabStop = false;
-            this.restaurar.Visible = false;
-            this.restaurar.Click += new System.EventHandler(this.Restaurar_Click);
-            // 
-            // maximizar
-            // 
-            this.maximizar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.maximizar.Image = global::compiladorR.Properties.Resources.maximizar;
-            this.maximizar.Location = new System.Drawing.Point(1283, 5);
-            this.maximizar.Name = "maximizar";
-            this.maximizar.Size = new System.Drawing.Size(14, 14);
-            this.maximizar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.maximizar.TabIndex = 1;
-            this.maximizar.TabStop = false;
-            this.maximizar.Click += new System.EventHandler(this.Maximizar_Click);
-            // 
-            // salir
-            // 
-            this.salir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.salir.Image = global::compiladorR.Properties.Resources.cerrar;
-            this.salir.Location = new System.Drawing.Point(1312, 5);
-            this.salir.Name = "salir";
-            this.salir.Size = new System.Drawing.Size(14, 14);
-            this.salir.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.salir.TabIndex = 0;
-            this.salir.TabStop = false;
-            this.salir.Click += new System.EventHandler(this.Salir_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -342,15 +344,15 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panelSuperior.ResumeLayout(false);
             this.panelSuperior.PerformLayout();
-            this.menuArchivo.ResumeLayout(false);
-            this.menuArchivo.PerformLayout();
-            this.panelizquierdo.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.restaurar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maximizar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.salir)).EndInit();
+            this.menuArchivo.ResumeLayout(false);
+            this.menuArchivo.PerformLayout();
+            this.panelizquierdo.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

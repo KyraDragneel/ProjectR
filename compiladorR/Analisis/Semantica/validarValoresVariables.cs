@@ -15,9 +15,9 @@ namespace compiladorR.Analisis.Semantica
         {
             List<string> errores = new List<string>();
             string auxiliarTipo;
-            string errorAsignacion = "Error: El valor asignado no pertenece al tipo esperado. Linea: ";
-            string errorDeclaracion = "Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
-            string errorAlmacenado = "Error: La variable asignada no ha sido inicializada. Linea: ";
+            string errorAsignacion = "Validacion Error: El valor asignado no pertenece al tipo esperado. Linea: ";
+            string errorDeclaracion = "Validacion Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
+            string errorAlmacenado = "Validacion Error: La variable asignada no ha sido inicializada. Linea: ";
             int residuo = 0;
             float residuoF = 0;
             double residuoD = 0;
@@ -151,7 +151,7 @@ namespace compiladorR.Analisis.Semantica
                                 {
                                     errores.Add(errorAsignacion + variables[i].getLinea());
                                 }
-                                else
+                                else if (!variables[i].getValor().Contains("next"))
                                 {
                                     string tipoBusqueda = "";
                                     string valorAlmacenado = "";
@@ -611,32 +611,35 @@ namespace compiladorR.Analisis.Semantica
                                 string tipoBusqueda = "";
                                 string valorAlmacenado = "";
 
-                                for (int j = i - 1; j >= 0; j--)
+                                if(!variables[i].getValor().Contains("next"))
                                 {
-                                    if (variables[i].getValor().Equals(variables[j].getNombre()))
+                                    for (int j = i - 1; j >= 0; j--)
                                     {
-                                        tipoBusqueda = variables[j].getTipo();
-
-                                        if (!variables[j].getValor().Equals(""))
+                                        if (variables[i].getValor().Equals(variables[j].getNombre()))
                                         {
-                                            valorAlmacenado = variables[j].getValor();
+                                            tipoBusqueda = variables[j].getTipo();
+
+                                            if (!variables[j].getValor().Equals(""))
+                                            {
+                                                valorAlmacenado = variables[j].getValor();
+                                            }
                                         }
                                     }
-                                }
 
-                                if (tipoBusqueda.Equals(""))
-                                {
-                                    errores.Add(errorDeclaracion + variables[i].getLinea());
-                                }
-                                else if (!tipoBusqueda.Equals(auxiliarTipo))
-                                {
-                                    errores.Add(errorAsignacion + variables[i].getLinea());
-                                }
+                                    if (tipoBusqueda.Equals(""))
+                                    {
+                                        errores.Add(errorDeclaracion + variables[i].getLinea());
+                                    }
+                                    else if (!tipoBusqueda.Equals(auxiliarTipo))
+                                    {
+                                        errores.Add(errorAsignacion + variables[i].getLinea());
+                                    }
 
-                                if (valorAlmacenado.Equals(""))
-                                {
-                                    errores.Add(errorAlmacenado + variables[i].getLinea());
-                                }
+                                    if (valorAlmacenado.Equals(""))
+                                    {
+                                        errores.Add(errorAlmacenado + variables[i].getLinea());
+                                    }
+                                }                            
                             }
                             else if (variables[i].getValor().Contains("[") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\""))
                             {
@@ -682,35 +685,38 @@ namespace compiladorR.Analisis.Semantica
 
                             if (Regex.IsMatch(variables[i].getValor(), "([a-zA-Z]|_*[a-zA-Z]){1}[a-zA-Z0-9_]*") && !Regex.IsMatch(variables[i].getValor(), "\'[^\']\'") && !Regex.IsMatch(variables[i].getValor(), "\"[^\"]*\"") && !variables[i].getValor().Equals("true") && !variables[i].getValor().Equals("false") && !variables[i].getValor().Contains("["))
                             {
-                                string tipoBusqueda = "";
-                                string valorAlmacenado = "";
-
-                                for (int j = i - 1; j >= 0; j--)
+                                if(!variables[i].getValor().Contains("next"))
                                 {
-                                    if (variables[i].getValor().Equals(variables[j].getNombre()))
-                                    {
-                                        tipoBusqueda = variables[j].getTipo();
+                                    string tipoBusqueda = "";
+                                    string valorAlmacenado = "";
 
-                                        if (!variables[j].getValor().Equals(""))
+                                    for (int j = i - 1; j >= 0; j--)
+                                    {
+                                        if (variables[i].getValor().Equals(variables[j].getNombre()))
                                         {
-                                            valorAlmacenado = variables[j].getValor();
+                                            tipoBusqueda = variables[j].getTipo();
+
+                                            if (!variables[j].getValor().Equals(""))
+                                            {
+                                                valorAlmacenado = variables[j].getValor();
+                                            }
                                         }
                                     }
-                                }
 
-                                if (tipoBusqueda.Equals(""))
-                                {
-                                    errores.Add(errorDeclaracion + variables[i].getLinea());
-                                }
-                                else if (!tipoBusqueda.Equals(auxiliarTipo))
-                                {
-                                    errores.Add(errorAsignacion + variables[i].getLinea());
-                                }
+                                    if (tipoBusqueda.Equals(""))
+                                    {
+                                        errores.Add(errorDeclaracion + variables[i].getLinea());
+                                    }
+                                    else if (!tipoBusqueda.Equals(auxiliarTipo))
+                                    {
+                                        errores.Add(errorAsignacion + variables[i].getLinea());
+                                    }
 
-                                if (valorAlmacenado.Equals(""))
-                                {
-                                    errores.Add(errorAlmacenado + variables[i].getLinea());
-                                }
+                                    if (valorAlmacenado.Equals(""))
+                                    {
+                                        errores.Add(errorAlmacenado + variables[i].getLinea());
+                                    }
+                                }                               
                             }
                             else if (variables[i].getValor().Contains("["))
                             {

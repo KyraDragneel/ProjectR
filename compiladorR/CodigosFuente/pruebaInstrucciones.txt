@@ -4,6 +4,63 @@ public class miClase
 {
 	public static void main(String[] args)
 	{
-		System.out.println("Hola");
+
+		Scanner leer = new Scanner(System.in);
+
+		int i1 = 0;
+		int i2 = 1;
+		int i3 = leer.nextInt();
+		int i4 = 1 + 2;
+		int i5 = i4 - 1;
+
+		i1 = 1 + 4 + (3 * i4);
+		i2 = leer.nextInt();
+
+		float f1 = 0.5;
+		float f2 = 0.5 + f1;
+		float f3 = (3+2+f2)/2;
+		float f4 = leer.nextFloat();
+
+		f1 = 2 + 4 + (3 * f2);
+		f3 = leer.nextFloat();
+
+		double d1 = 0.75;
+		double d2 = 0.25 + d1;
+		double d3 = (3+1+d2)/3;
+		double d4 = leer.nextDouble();
+
+		d2 = 3 + 4 + (3 * d1);
+		d1 = leer.nextDouble();
+
+		boolean b1 = true;
+		boolean b2 = false;
+		boolean b3 = b1;
+		boolean b4 = leer.nextBoolean();
+
+		b1 = false;
+		b3 = leer.nextBoolean();
+
+		char c1 = 'c';
+		char c2 = c1;
+		char c3 = leer.nextChar();
+
+		c1 = 'd';
+		c2 = leer.nextChar();
+
+		String s1 = "String1";
+		String s2 = "String " + s1 + " String";
+		String s3 = "String " + b2 + " String";
+		String s4 = "String " + (i5+f1-d2) + " String";
+		String s5 = "String " + (i5+f1-d2) + " String " + s1;
+		String s6 = leer.next();
+
+		s1 = "Se cambio este string en la asignacion";
+		s2 = "Pollo " + (i5+f1-d2) + " String";
+		s3 = leer.next();
+
+		System.out.println("Hola "+i1);
+		System.out.println("Hola " + (i1+i2) + " Hola");
+		System.out.print(i2 + " Hola");
+		System.out.println(c2 + " Hola "+s1+" "+b1);
 	}
 }

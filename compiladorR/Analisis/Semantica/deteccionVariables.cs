@@ -9,13 +9,14 @@ namespace compiladorR.Analisis.Semantica
 {
     class deteccionVariables
     {
-        public static List<elementoVariable> detectarVariables(List<elementoToken> tokens)
+        public static List<elementoVariable> detectarVariables(List<elementoToken> tokens, bool saltarInicio)
         {
             List<elementoVariable> variables = new List<elementoVariable>();
             List<elementoVariable> auxiliarVariables = new List<elementoVariable>();
 
-            for (int i = ignorarInicio(tokens); i < tokens.Count; i++)
+            for (int i = ignorarInicio(tokens,saltarInicio); i < tokens.Count; i++)
             {
+
                 if (tokens[i].getNombre().Equals("Scanner") || tokens[i].getNombre().Equals("int") || tokens[i].getNombre().Equals("float") || tokens[i].getNombre().Equals("double") || tokens[i].getNombre().Equals("String") || tokens[i].getNombre().Equals("char") || tokens[i].getNombre().Equals("boolean"))
                 {
                     for (int j = i + 1; j < tokens.Count; j++)
@@ -30,6 +31,17 @@ namespace compiladorR.Analisis.Semantica
                                 variables.Add(auxiliarVariables[k]);
                             }
 
+                            i = j;
+                            j = tokens.Count;
+                        }
+                    }
+                }
+                else if(tokens[i].getNombre().Equals("System"))
+                {
+                    for (int j = i + 1; j < tokens.Count; j++)
+                    {
+                        if (tokens[j].getNombre().Equals(";"))
+                        {
                             i = j;
                             j = tokens.Count;
                         }
@@ -56,7 +68,7 @@ namespace compiladorR.Analisis.Semantica
                         {
                             if (tokens[j].getNombre().Equals(";"))
                             {
-                                variables.Add(evaluarAsignacion(obtenerTokensLinea(tokens, i, j)));
+                                variables.Add(generarVariableAsignacion(obtenerTokensLinea(tokens, i, j)));
 
                                 i = j + 1;
                                 j = tokens.Count;
@@ -94,7 +106,7 @@ namespace compiladorR.Analisis.Semantica
                     {
                         if (tokens[j].getNombre().Equals(")"))
                         {
-                            variables.Add(evaluarAsignacion(obtenerTokensLinea(tokens, i, j)));
+                            variables.Add(generarVariableAsignacion(obtenerTokensLinea(tokens, i, j)));
 
                             i = j;
                             j = tokens.Count;
@@ -107,7 +119,7 @@ namespace compiladorR.Analisis.Semantica
                     {
                         if (tokens[j].getNombre().Equals(";"))
                         {
-                            variables.Add(evaluarAsignacion(obtenerTokensLinea(tokens, i, j)));
+                            variables.Add(generarVariableAsignacion(obtenerTokensLinea(tokens, i, j)));
 
                             i = j;
                             j = tokens.Count;
@@ -119,24 +131,27 @@ namespace compiladorR.Analisis.Semantica
             return variables;
         }
 
-        private static int ignorarInicio(List<elementoToken> tokens)
+        private static int ignorarInicio(List<elementoToken> tokens, bool activar)
         {
             int numeroToken = 0;
 
-            for (int i = 0; i < tokens.Count; i++)
+            if (activar == true)
             {
-                if (tokens[i].getNombre().Equals("main"))
+                for (int i = 0; i < tokens.Count; i++)
                 {
-                    for (int j = i + 1; j < tokens.Count; j++)
+                    if (tokens[i].getNombre().Equals("main"))
                     {
-                        if (tokens[j].getNombre().Equals(")"))
+                        for (int j = i + 1; j < tokens.Count; j++)
                         {
-                            numeroToken = j + 1;
-                            j = tokens.Count;
+                            if (tokens[j].getNombre().Equals(")"))
+                            {
+                                numeroToken = j + 1;
+                                j = tokens.Count;
+                            }
                         }
                     }
                 }
-            }
+            }        
 
             return numeroToken;
         }
@@ -210,12 +225,12 @@ namespace compiladorR.Analisis.Semantica
 
             return variables;
         }
-
+        /*
         private static elementoVariable evaluarAsignacion(List<elementoToken> tokens)
         {
             elementoVariable variable = new elementoVariable();
             string valorGuardado = "";
-
+            
             for (int i = 1; i < tokens.Count; i++)
             {
                 if (Regex.IsMatch(tokens[i].getNombre(), "\"[^\"]*\""))
@@ -229,6 +244,8 @@ namespace compiladorR.Analisis.Semantica
                     valorGuardado = tokens[i].getNombre();
                     tokens[i].setNombre("\'" + 1 + "\'");
                 }
+
+                Console.WriteLine(tokens[i].getNombre());
             }
 
             for (int i = 0; i < tokens.Count; i++)
@@ -238,12 +255,12 @@ namespace compiladorR.Analisis.Semantica
                     tokens[i].setNombre(valorGuardado);
                 }
             }
-
+            
             variable = generarVariableAsignacion(tokens);
-
+            
             return variable;
         }
-
+        */
         private static elementoVariable generarVariableDeclaracion(List<elementoToken> tokens, int inicio, int final)
         {
             elementoVariable variable = new elementoVariable();

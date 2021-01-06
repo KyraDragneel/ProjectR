@@ -12,8 +12,8 @@ namespace compiladorR.Analisis.Semantica
         {
             //Lista de errores que regresara
             List<string> errores = new List<string>();
-            string errorMultiple = "Error: La variable ya ha sido declarada previamente. Linea: ";
-            string errorDeclaracion = "Error: La variable no ha sido declarada previamente. Linea: ";
+            string errorMultiple = "Variable Error: La variable ya ha sido declarada previamente. Linea: ";
+            string errorDeclaracion = "Variable Error: La variable no ha sido declarada previamente. Linea: ";
 
             //Ciclo que recorrera toda la lista de variables
             for (int i = 0; i < variables.Count; i++)
