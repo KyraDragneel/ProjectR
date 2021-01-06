@@ -12,9 +12,9 @@ namespace compiladorR.Analisis.Semantica
         {
             //Lista de errores que regresara
             List<string> errores = new List<string>();
-            string errorMultiple = "Error: La variable ya ha sido declarada previamente. Linea: ";
-            string errorDeclaracion = "Error: La variable no ha sido declarada previamente. Linea: ";
-            string errorIndice = "Error: Se intenta almacenar un valor fuera del indice establecido. Linea: ";
+            string errorMultiple = "Arreglo Error: La variable ya ha sido declarada previamente. Linea: ";
+            string errorDeclaracion = "Arreglo Error: La variable no ha sido declarada previamente. Linea: ";
+            string errorIndice = "Arreglo Error: Se intenta almacenar un valor fuera del indice establecido. Linea: ";
 
             for (int i = 0; i < variables.Count; i++)
             {
