@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="CodigosFuente\ejemploMuestra.txt" />
     <Content Include="CodigosFuente\ejemploVariables.txt" />
     <Content Include="CodigosFuente\pruebaConcatenaciones.txt" />
     <Content Include="CodigosFuente\pruebaContenidoValores.txt" />

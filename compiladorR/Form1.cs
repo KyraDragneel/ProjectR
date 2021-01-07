@@ -26,14 +26,18 @@ namespace compiladorR
         List<tipoFloat> variablesFloat = new List<tipoFloat>();
         List<tipoInt> variablesInt = new List<tipoInt>();
         List<tipoString> variablesString = new List<tipoString>();
+        bool valorStop;
 
         public Form1()
         {
             InitializeComponent();
+            this.MaximumSize = SystemInformation.PrimaryMonitorMaximizedWindowSize;
         }
 
         private void run_Click(object sender, EventArgs e)
         {
+            valorStop = false;
+            cambiarPanelEstado();
             areaResultado.Clear();
             List<elementoToken> lista = new List<elementoToken>();
             List<elementoVariable> variables = new List<elementoVariable>();
@@ -52,7 +56,9 @@ namespace compiladorR
                 {
                     Console.WriteLine(arbol.ParserMessages[i].Message);
                 }
-                areaResultado.AppendText("Por favor revise su codigo" + "\n");
+                areaResultado.AppendText("Error: Código no permitido por la gramatica" + "\n");
+                valorStop = true;
+                cambiarPanelEstado();
             }
             else
             {
@@ -135,7 +141,7 @@ namespace compiladorR
                     {
                         limpiarMemoria();
                         compilarInstrucciones(lista);
-
+                        /*
                         Console.WriteLine("Variables Int");
                         for(int i = 0; i < variablesInt.Count; i++)
                         {
@@ -176,15 +182,25 @@ namespace compiladorR
                         {
                             Console.WriteLine("Nombre: " + variablesBoolean[i].getNombre() + " Valor: " + variablesBoolean[i].getValor());
                         }
-                        Console.WriteLine("");
+                        Console.WriteLine("");*/
+
+                        if(valorStop == false)
+                        {
+                            areaResultado.AppendText("Proceso finalizado" + "\n");
+                        }
+                        
                     }
                     catch(Exception ex)
                     {
-                        Console.WriteLine("Algo ocurrio al ejecutar la compilacion");
+                        valorStop = true;
+                        cambiarPanelEstado();
+                        areaResultado.AppendText("Error: "+ex.Message + "\n");
                     }                  
                 }
                 else
                 {
+                    valorStop = true;
+                    cambiarPanelEstado();
                     listaErrores = ordenacionErrores.ordenarErrores(listaErrores);
 
                     for (int i = 0; i < listaErrores.Count; i++)
@@ -230,6 +246,12 @@ namespace compiladorR
                     i = posicionTermino;
 
                     agregarVariable(lineaEjecutada);
+
+                    if(valorStop == true)
+                    {
+                        cambiarPanelEstado();
+                        return;
+                    }
                 }
                 else if(tokens[i].getTipo().Equals("id"))
                 {
@@ -249,6 +271,12 @@ namespace compiladorR
                     i = posicionTermino;
 
                     editarVariable(lineaEjecutada);
+
+                    if (valorStop == true)
+                    {
+                        cambiarPanelEstado();
+                        return;
+                    }
                 }
                 else if (tokens[i].getNombre().Equals("System"))
                 {
@@ -268,6 +296,12 @@ namespace compiladorR
                     i = posicionTermino;
 
                     imprimirPantalla(lineaEjecutada);
+
+                    if (valorStop == true)
+                    {
+                        cambiarPanelEstado();
+                        return;
+                    }
                 }
                 else if(tokens[i].getNombre().Equals("Scanner"))
                 {
@@ -309,7 +343,13 @@ namespace compiladorR
                             #region Asignar variables tipo Int
                             if(variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("int",variablesDetectadas[i].getNombre());
+                                if(nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
                                 variablesInt.Add(new tipoInt(variablesDetectadas[i].getNombre(), Int32.Parse(nuevoValor)));
                             }
@@ -357,7 +397,13 @@ namespace compiladorR
                             #region Asignar variables tipo float
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("float", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
                                 variablesFloat.Add(new tipoFloat(variablesDetectadas[i].getNombre(), float.Parse(nuevoValor)));
                             }
@@ -405,7 +451,13 @@ namespace compiladorR
                             #region Asignar variables tipo double
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("double", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
                                 variablesDouble.Add(new tipoDouble(variablesDetectadas[i].getNombre(), double.Parse(nuevoValor)));
                             }
@@ -453,7 +505,13 @@ namespace compiladorR
                             #region Asignar variables tipo String
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("String", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
                                 variablesString.Add(new tipoString(variablesDetectadas[i].getNombre(), nuevoValor));
                             }
@@ -575,6 +633,13 @@ namespace compiladorR
                                             if(contadorParentesis == 0)
                                             {
                                                 valorEvaluado = evaluarExpresion(valorEvaluado);
+
+                                                if(valorEvaluado.Equals("Error"))
+                                                {
+                                                    areaResultado.AppendText("Error: La expresion no ha podido ser evaluada. Linea: "+ variablesDetectadas[i].getLinea() + "\n");
+                                                    valorStop = true;
+                                                    return;
+                                                }
                                                 valoresVariable[j].setNombre(valorEvaluado);
                                                 j = k;
                                                 k = valoresVariable.Count;
@@ -612,7 +677,13 @@ namespace compiladorR
                             #region Asignar variables tipo char
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("char", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
                                 variablesChar.Add(new tipoChar(variablesDetectadas[i].getNombre(), nuevoValor[0]));
                             }
@@ -666,7 +737,13 @@ namespace compiladorR
                             #region Asignar variables tipo boolean
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("boolean", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
                                 variablesBoolean.Add(new tipoBoolean(variablesDetectadas[i].getNombre(), bool.Parse(nuevoValor)));
                             }
@@ -716,14 +793,18 @@ namespace compiladorR
                             break;
 
                         default:
-                            Console.WriteLine("Algo ocurrio en el case de agregar variables");
+                            areaResultado.AppendText("Error: Declaracion de variable no permitida");
+                            valorStop = true;
+                            return;
                             break;
                     }
                 }
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Ocurrio algo al agregar una variable: " + ex.Message);
+                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                valorStop = true;
+                return;
             }          
         }
 
@@ -847,6 +928,14 @@ namespace compiladorR
                             if (contadorParentesis == 0)
                             {
                                 valorEvaluado = evaluarExpresion(valorEvaluado);
+
+                                if (valorEvaluado.Equals("Error"))
+                                {
+                                    areaResultado.AppendText("Error: La expresion no ha podido ser evaluada" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
+
                                 linea[i].setNombre(valorEvaluado);
                                 i = j;
                                 j = linea.Count;
@@ -879,7 +968,9 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Ocurrio algo al imprimir en pantalla: " + ex.Message);
+                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                valorStop = true;
+                return;
             }
         }
 
@@ -970,7 +1061,13 @@ namespace compiladorR
                             #region Editar variables tipo Int
                             if(variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("int", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
 
                                 for (int j = 0; j < variablesInt.Count; j++)
@@ -1028,7 +1125,13 @@ namespace compiladorR
                             #region Editar variables tipo float
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("float", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
 
                                 for (int j = 0; j < variablesFloat.Count; j++)
@@ -1086,7 +1189,13 @@ namespace compiladorR
                             #region Editar variables tipo double
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("double", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
 
                                 for (int j = 0; j < variablesDouble.Count; j++)
@@ -1144,7 +1253,13 @@ namespace compiladorR
                             #region Editar variables tipo String
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("String", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
 
                                 for (int j = 0; j < variablesString.Count; j++)
@@ -1273,6 +1388,14 @@ namespace compiladorR
                                             if (contadorParentesis == 0)
                                             {
                                                 valorEvaluado = evaluarExpresion(valorEvaluado);
+
+                                                if (valorEvaluado.Equals("Error"))
+                                                {
+                                                    areaResultado.AppendText("Error: La expresion no ha podido ser evaluada. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                                    valorStop = true;
+                                                    return;
+                                                }
+
                                                 valoresVariable[j].setNombre(valorEvaluado);
                                                 j = k;
                                                 k = valoresVariable.Count;
@@ -1313,7 +1436,13 @@ namespace compiladorR
                             #region Editar variables tipo char
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("char", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
 
                                 for (int j = 0; j < variablesChar.Count; j++)
@@ -1378,7 +1507,13 @@ namespace compiladorR
                             #region Editar variables tipo boolean
                             if (variablesDetectadas[i].getValor().Contains(".next"))
                             {
-                                nuevoValor = Form2.Show();
+                                nuevoValor = Form2.Show("boolean", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    valorStop = true;
+                                    return;
+                                }
                                 areaResultado.AppendText(nuevoValor + "\n");
 
                                 for (int j = 0; j < variablesBoolean.Count; j++)
@@ -1439,14 +1574,18 @@ namespace compiladorR
                             break;
 
                         default:
-                            Console.WriteLine("Algo ocurrio en el case de editar variables: "+variablesDetectadas[i].getLinea());
+                            areaResultado.AppendText("Error: Conflictos al editar variables" + "\n");
+                            valorStop = true;
+                            return;
                             break;
                     }
                 }
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Ocurrio algo al editar una variable: "+ex.Message);
+                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                valorStop = true;
+                return;
             }
         }
 
@@ -1503,7 +1642,8 @@ namespace compiladorR
                 {
                     Console.WriteLine(arbol.ParserMessages[i].Message);
                 }
-                areaResultado.AppendText("Detalles al generar tokens de asignacion" + "\n");
+                areaResultado.AppendText("Error: Conflictos al generar tokens de asignacion" + "\n");
+                valorStop = true;
             }
             else
             {
@@ -1557,6 +1697,10 @@ namespace compiladorR
         private void Maximizar_Click(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Maximized;
+            //this.Location = new Point(0, 0);
+            //this.Size = new Size(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
+            //this.Location = Screen.PrimaryScreen.WorkingArea.Location;
+            //this.Size = Screen.PrimaryScreen.WorkingArea.Size;
             maximizar.Visible = false;
             restaurar.Visible = true;
         }
@@ -1564,6 +1708,10 @@ namespace compiladorR
         private void Restaurar_Click(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Normal;
+            //this.Location = new Point(0, 0);
+            //this.Size = new Size(1338, 781);
+            //this.Location = Screen.PrimaryScreen.WorkingArea.Location;
+            //this.Size = new Size(1338, 781);
             restaurar.Visible = false;
             maximizar.Visible = true;
         }
@@ -1635,9 +1783,32 @@ namespace compiladorR
             }
 
         }
-        private void stop_Click(object sender, EventArgs e)
+
+        private void entrada_KeyDown(object sender, KeyEventArgs e)
         {
-            
+            if(e.Control && e.KeyCode == Keys.V)
+            {
+                entrada.Text += (string)Clipboard.GetData("Text");
+                e.Handled = true;
+            }
+        }
+
+        private void cambiarPanelEstado()
+        {
+            if (valorStop == true)
+            {
+                panelEstado.GradientBottomLeft = Color.Red;
+                panelEstado.GradientBottomRight = Color.Red;
+                panelEstado.GradientTopLeft = Color.Red;
+                panelEstado.GradientTopRight = Color.FromArgb(255, 128, 0);
+            }
+            else
+            {
+                panelEstado.GradientBottomLeft = Color.FromArgb(16, 169, 104);
+                panelEstado.GradientBottomRight = Color.FromArgb(16, 169, 104);
+                panelEstado.GradientTopLeft = Color.FromArgb(16, 169, 104);
+                panelEstado.GradientTopRight = Color.FromArgb(46, 230, 71);
+            }
         }
     }
 }

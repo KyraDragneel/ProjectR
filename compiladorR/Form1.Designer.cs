@@ -46,10 +46,9 @@
             this.guardarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.guardarComoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelizquierdo = new System.Windows.Forms.Panel();
-            this.stop = new System.Windows.Forms.Button();
             this.run = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.bunifuGradientPanel1 = new Bunifu.Framework.UI.BunifuGradientPanel();
+            this.panelEstado = new Bunifu.Framework.UI.BunifuGradientPanel();
             this.bunifuSeparator1 = new Bunifu.Framework.UI.BunifuSeparator();
             this.moverVentana = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.panelSuperior.SuspendLayout();
@@ -77,11 +76,11 @@
             this.entrada.Size = new System.Drawing.Size(1239, 493);
             this.entrada.TabIndex = 0;
             this.entrada.Text = "";
+            this.entrada.KeyDown += new System.Windows.Forms.KeyEventHandler(this.entrada_KeyDown);
             // 
             // areaResultado
             // 
-            this.areaResultado.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.areaResultado.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.areaResultado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(37)))), ((int)(((byte)(44)))));
             this.areaResultado.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -241,26 +240,12 @@
             // 
             // panelizquierdo
             // 
-            this.panelizquierdo.Controls.Add(this.stop);
             this.panelizquierdo.Controls.Add(this.run);
             this.panelizquierdo.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelizquierdo.Location = new System.Drawing.Point(0, 40);
             this.panelizquierdo.Name = "panelizquierdo";
             this.panelizquierdo.Size = new System.Drawing.Size(45, 741);
             this.panelizquierdo.TabIndex = 4;
-            // 
-            // stop
-            // 
-            this.stop.BackgroundImage = global::compiladorR.Properties.Resources.stop1;
-            this.stop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.stop.FlatAppearance.BorderSize = 0;
-            this.stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.stop.Location = new System.Drawing.Point(17, 42);
-            this.stop.Name = "stop";
-            this.stop.Size = new System.Drawing.Size(14, 16);
-            this.stop.TabIndex = 3;
-            this.stop.UseVisualStyleBackColor = true;
-            this.stop.Click += new System.EventHandler(this.stop_Click);
             // 
             // run
             // 
@@ -282,7 +267,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
-            this.panel3.Controls.Add(this.bunifuGradientPanel1);
+            this.panel3.Controls.Add(this.panelEstado);
             this.panel3.Controls.Add(this.bunifuSeparator1);
             this.panel3.Controls.Add(this.entrada);
             this.panel3.Controls.Add(this.areaResultado);
@@ -291,25 +276,26 @@
             this.panel3.Size = new System.Drawing.Size(1284, 741);
             this.panel3.TabIndex = 5;
             // 
-            // bunifuGradientPanel1
+            // panelEstado
             // 
-            this.bunifuGradientPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.bunifuGradientPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuGradientPanel1.BackgroundImage")));
-            this.bunifuGradientPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuGradientPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.bunifuGradientPanel1.GradientBottomLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
-            this.bunifuGradientPanel1.GradientBottomRight = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
-            this.bunifuGradientPanel1.GradientTopLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
-            this.bunifuGradientPanel1.GradientTopRight = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(230)))), ((int)(((byte)(71)))));
-            this.bunifuGradientPanel1.Location = new System.Drawing.Point(0, 715);
-            this.bunifuGradientPanel1.Name = "bunifuGradientPanel1";
-            this.bunifuGradientPanel1.Quality = 10;
-            this.bunifuGradientPanel1.Size = new System.Drawing.Size(1284, 26);
-            this.bunifuGradientPanel1.TabIndex = 3;
+            this.panelEstado.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelEstado.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panelEstado.BackgroundImage")));
+            this.panelEstado.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panelEstado.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelEstado.GradientBottomLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
+            this.panelEstado.GradientBottomRight = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
+            this.panelEstado.GradientTopLeft = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(169)))), ((int)(((byte)(104)))));
+            this.panelEstado.GradientTopRight = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(230)))), ((int)(((byte)(71)))));
+            this.panelEstado.Location = new System.Drawing.Point(0, 715);
+            this.panelEstado.Name = "panelEstado";
+            this.panelEstado.Quality = 10;
+            this.panelEstado.Size = new System.Drawing.Size(1284, 26);
+            this.panelEstado.TabIndex = 3;
             // 
             // bunifuSeparator1
             // 
-            this.bunifuSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.bunifuSeparator1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.bunifuSeparator1.BackColor = System.Drawing.Color.Transparent;
             this.bunifuSeparator1.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(16)))), ((int)(((byte)(25)))));
             this.bunifuSeparator1.LineThickness = 2;
@@ -370,9 +356,8 @@
         private System.Windows.Forms.PictureBox maximizar;
         private System.Windows.Forms.PictureBox salir;
         private Bunifu.Framework.UI.BunifuSeparator bunifuSeparator1;
-        private System.Windows.Forms.Button stop;
         private Bunifu.Framework.UI.BunifuDragControl moverVentana;
-        private Bunifu.Framework.UI.BunifuGradientPanel bunifuGradientPanel1;
+        private Bunifu.Framework.UI.BunifuGradientPanel panelEstado;
         private System.Windows.Forms.MenuStrip menuArchivo;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
