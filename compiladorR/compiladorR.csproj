@@ -55,6 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analisis\Gramaticas\gramaticaConcatenacion.cs" />
+    <Compile Include="Analisis\Gramaticas\gramaticaCondicion.cs" />
+    <Compile Include="Analisis\Gramaticas\gramaticaCuerpo.cs" />
     <Compile Include="Analisis\Gramaticas\gramaticaExpresion.cs" />
     <Compile Include="Analisis\Gramaticas\gramaticaJava.cs" />
     <Compile Include="Analisis\Semantica\comprobacionConcatenacion.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Compilacion\ModelosDatos\tipoFloat.cs" />
     <Compile Include="Compilacion\ModelosDatos\tipoInt.cs" />
     <Compile Include="Compilacion\ModelosDatos\tipoString.cs" />
+    <Compile Include="Compilacion\ModelosSentencias\sentenciaIf.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +122,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="CodigosFuente\ejemploIf.txt" />
     <Content Include="CodigosFuente\ejemploMuestra.txt" />
     <Content Include="CodigosFuente\ejemploVariables.txt" />
     <Content Include="CodigosFuente\pruebaConcatenaciones.txt" />

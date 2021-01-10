@@ -2,6 +2,7 @@
 using compiladorR.Analisis.Semantica;
 using compiladorR.Compilacion;
 using compiladorR.Compilacion.ModelosDatos;
+using compiladorR.Compilacion.ModelosSentencias;
 using Irony.Parsing;
 using Microsoft.JScript;
 using Microsoft.JScript.Vsa;
@@ -26,7 +27,11 @@ namespace compiladorR
         List<tipoFloat> variablesFloat = new List<tipoFloat>();
         List<tipoInt> variablesInt = new List<tipoInt>();
         List<tipoString> variablesString = new List<tipoString>();
+
+        List<sentenciaIf> sentenciasIf = new List<sentenciaIf>();
+
         bool valorStop;
+        int contadorIf = 0;
 
         public Form1()
         {
@@ -183,6 +188,19 @@ namespace compiladorR
                             Console.WriteLine("Nombre: " + variablesBoolean[i].getNombre() + " Valor: " + variablesBoolean[i].getValor());
                         }
                         Console.WriteLine("");*/
+                        
+                        Console.WriteLine();
+                        for(int i = 0; i < sentenciasIf.Count; i++)
+                        {
+                            Console.WriteLine("Condicion: "+sentenciasIf[i].getCondicion());
+                            Console.WriteLine("Codigo: " + sentenciasIf[i].getCodigo());
+                            Console.WriteLine("Tokens");
+                            for(int j = 0; j < sentenciasIf[i].getTokens().Count; j++)
+                            {
+                                Console.WriteLine(sentenciasIf[i].getTokens()[j].getNombre());
+                            }
+                        }
+                        Console.WriteLine("");
 
                         if(valorStop == false)
                         {
@@ -317,6 +335,63 @@ namespace compiladorR
                     }
 
                     i = posicionTermino;
+                }
+                else if(tokens[i].getNombre().Equals("if"))
+                {
+                    contadorIf++;
+                    posicionTermino = i;
+                    int posicionPrimerCorchete = i;
+                    int contadorCorchetes = 0;
+                    bool seguroElse = false;
+
+                    for(int j = i + 1; j < tokens.Count; j++)
+                    {
+                        if(tokens[j].getNombre().Equals("{"))
+                        {
+                            posicionPrimerCorchete = j;
+                            contadorCorchetes++;
+                            j = tokens.Count;
+                        }
+                    }
+
+                    for(int j = posicionPrimerCorchete + 1; j < tokens.Count; j++)
+                    {
+                        if(tokens[j].getNombre().Equals("{"))
+                        {
+                            contadorCorchetes++;
+                            seguroElse = false;
+                        }
+
+                        if(tokens[j].getNombre().Equals("}"))
+                        {
+                            contadorCorchetes--;
+                        }
+
+                        if(contadorCorchetes == 0 && seguroElse == false)
+                        {
+                            if(tokens[j+1].getNombre().Equals("else"))
+                            {
+                                seguroElse = true;
+                            }
+                            else
+                            {
+                                posicionTermino = j;
+                                j = tokens.Count;
+                            }
+                        }
+                    }
+
+                    lineaEjecutada = obtenerTokensLinea(tokens, i, posicionTermino);
+
+                    i = posicionTermino;
+
+                    evaluarIf(lineaEjecutada);
+
+                    if (valorStop == true)
+                    {
+                        cambiarPanelEstado();
+                        return;
+                    }
                 }
             }
         }
@@ -1589,6 +1664,130 @@ namespace compiladorR
             }
         }
 
+        private void evaluarIf(List<elementoToken> linea)
+        {
+            try
+            {
+                int contadorCorchetes;
+                int contadorParentesis;
+                string condicion;
+                List<elementoToken> tokens;
+
+                for(int i = 0; i < linea.Count; i++)
+                {
+                    contadorParentesis = 0;
+                    contadorCorchetes = 0;
+
+                    if(linea[i].getNombre().Equals("if"))
+                    {
+                        condicion = "";
+                        tokens = new List<elementoToken>();
+
+                        for(int j = i + 1; j < linea.Count; j++)
+                        {
+                            if(linea[j].getNombre().Equals("("))
+                            {
+                                contadorParentesis++;
+                            }
+                            else if(linea[j].getNombre().Equals(")"))
+                            {
+                                contadorParentesis--;
+                            }
+                            
+                            if(condicion.Equals(""))
+                            {
+                                condicion = linea[j].getNombre();
+                            }
+                            else
+                            {
+                                condicion = condicion + " " + linea[j].getNombre();
+                            }
+
+                            if(contadorParentesis == 0)
+                            {
+                                condicion = condicion.Substring(1,condicion.Length-2);
+                                condicion = reemplazarVariablesCondicion(condicion);
+                                condicion = evaluarCondicion(condicion);
+
+                                if(condicion.Equals("error"))
+                                {
+                                    valorStop = true;
+                                    areaResultado.AppendText("Error: La condicion ingresada no es valida. Linea: " + "\n");
+                                    return;
+                                }
+
+                                i = j;
+                                j = linea.Count;
+                            }
+                        }
+
+                        for(int j = i + 1; j < linea.Count; j++)
+                        {
+                            if(linea[j].getNombre().Equals("{"))
+                            {
+                                contadorCorchetes++;
+                            }
+                            else if(linea[j].getNombre().Equals("}"))
+                            {
+                                contadorCorchetes--;
+                            }
+
+                            tokens.Add(linea[j]);
+
+                            if(contadorCorchetes == 0)
+                            {
+                                sentenciasIf.Add(new sentenciaIf(condicion,tokens,contadorIf));
+                                i = j;
+                                j = linea.Count;
+                            }
+                        }
+                    }
+                    else if(linea[i].getNombre().Equals("else") && !linea[i+1].getNombre().Equals("if"))
+                    {
+                        contadorCorchetes = 0;
+                        condicion = "";
+                        tokens = new List<elementoToken>();
+
+                        for (int j = i + 1; j < linea.Count; j++)
+                        {
+                            if (linea[j].getNombre().Equals("{"))
+                            {
+                                contadorCorchetes++;
+                            }
+                            else if (linea[j].getNombre().Equals("}"))
+                            {
+                                contadorCorchetes--;
+                            }
+
+                            tokens.Add(linea[j]);
+
+                            if (contadorCorchetes == 0)
+                            {
+                                sentenciasIf.Add(new sentenciaIf(condicion, tokens, contadorIf));
+                                i = j;
+                                j = linea.Count;
+                            }
+                        }
+                    }
+                }
+
+                for(int i = 0; i < sentenciasIf.Count; i++)
+                {
+                    if((sentenciasIf[i].getCondicion().Equals("True") || sentenciasIf[i].getCondicion().Equals("")) && sentenciasIf[i].getCodigo() == contadorIf)
+                    {
+                        compilarInstrucciones(sentenciasIf[i].getTokens());
+                        i = sentenciasIf.Count;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                valorStop = true;
+                return;
+            }
+        }
+
         #endregion
 
         #region Metodos auxiliares de compilacion
@@ -1662,6 +1861,143 @@ namespace compiladorR
             return tokens;
         }
 
+        private List<elementoToken> generarTokensCondicion(string valor)
+        {
+            List<elementoToken> tokens = new List<elementoToken>();
+
+            string codigo = valor;
+            var gramatica = new gramaticaCondicion();
+
+            var parser = new Parser(gramatica);
+            var arbol = parser.Parse(codigo);
+
+            if (arbol.Root == null)
+            {
+                for (int i = 0; i < arbol.ParserMessages.Count; i++)
+                {
+                    Console.WriteLine(arbol.ParserMessages[i].Message);
+                }
+                areaResultado.AppendText("Error: Conflictos al generar tokens de condicion" + "\n");
+                valorStop = true;
+            }
+            else
+            {
+                elementoToken auxiliar;
+
+                for (int i = 0; i < arbol.Tokens.Count - 1; i++)
+                {
+                    auxiliar = new elementoToken();
+                    auxiliar.setNombre(arbol.Tokens[i].Text);
+                    auxiliar.setTipo(arbol.Tokens[i].ToString().Split('(')[1].Replace("(", "").Replace(")", "").Replace("}", ""));
+                    auxiliar.setLinea(arbol.Tokens[i].Location.Line + 1);
+                    tokens.Add(auxiliar);
+                }
+            }
+
+            return tokens;
+        }
+
+        private string reemplazarVariablesCondicion(string expresion)
+        {
+            string resultado = "";
+            List<elementoToken> valoresVariable = new List<elementoToken>();
+
+            valoresVariable = generarTokensCondicion(expresion);
+
+            for (int j = 0; j < valoresVariable.Count; j++)
+            {
+                if (valoresVariable[j].getTipo().Equals("id"))
+                {
+                    for (int k = 0; k < variablesInt.Count; k++)
+                    {
+                        if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                        {
+                            valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                        }
+                    }
+                }
+            }
+
+            for (int j = 0; j < valoresVariable.Count; j++)
+            {
+                if (valoresVariable[j].getTipo().Equals("id"))
+                {
+                    for (int k = 0; k < variablesFloat.Count; k++)
+                    {
+                        if (valoresVariable[j].getNombre().Equals(variablesFloat[k].getNombre()))
+                        {
+                            valoresVariable[j].setNombre(variablesFloat[k].getValor().ToString());
+                        }
+                    }
+                }
+            }
+
+            for (int j = 0; j < valoresVariable.Count; j++)
+            {
+                if (valoresVariable[j].getTipo().Equals("id"))
+                {
+                    for (int k = 0; k < variablesDouble.Count; k++)
+                    {
+                        if (valoresVariable[j].getNombre().Equals(variablesDouble[k].getNombre()))
+                        {
+                            valoresVariable[j].setNombre(variablesDouble[k].getValor().ToString());
+                        }
+                    }
+                }
+            }
+
+            for (int j = 0; j < valoresVariable.Count; j++)
+            {
+                if (valoresVariable[j].getTipo().Equals("id"))
+                {
+                    for (int k = 0; k < variablesString.Count; k++)
+                    {
+                        if (valoresVariable[j].getNombre().Equals(variablesString[k].getNombre()))
+                        {
+                            valoresVariable[j].setNombre("\""+variablesString[k].getValor().ToString()+"\"");
+                        }
+                    }
+                }
+            }
+
+            for (int j = 0; j < valoresVariable.Count; j++)
+            {
+                if (valoresVariable[j].getTipo().Equals("id"))
+                {
+                    for (int k = 0; k < variablesChar.Count; k++)
+                    {
+                        if (valoresVariable[j].getNombre().Equals(variablesChar[k].getNombre()))
+                        {
+                            valoresVariable[j].setNombre("'"+variablesChar[k].getValor().ToString()+"'");
+                        }
+                    }
+                }
+            }
+
+            for (int j = 0; j < valoresVariable.Count; j++)
+            {
+                if (valoresVariable[j].getTipo().Equals("id"))
+                {
+                    for (int k = 0; k < variablesBoolean.Count; k++)
+                    {
+                        if (valoresVariable[j].getNombre().Equals(variablesBoolean[k].getNombre()))
+                        {
+                            valoresVariable[j].setNombre(variablesBoolean[k].getValor().ToString().ToLower());
+                        }
+                    }
+                }
+            }
+
+            resultado = valoresVariable[0].getNombre();
+
+            for(int i = 1; i < valoresVariable.Count; i++)
+            {
+                resultado = resultado + " " + valoresVariable[i].getNombre();
+            }
+
+            return resultado;
+        }
+
         private string evaluarExpresion(string expression)
         {
             VsaEngine engine = VsaEngine.CreateEngine();
@@ -1669,6 +2005,21 @@ namespace compiladorR
             {
                 object o = Eval.JScriptEvaluate(expression, engine);
                 return System.Convert.ToDouble(o).ToString();
+            }
+            catch
+            {
+                return "Error";
+            }
+            engine.Close();
+        }
+
+        private string evaluarCondicion(string expression)
+        {
+            VsaEngine engine = VsaEngine.CreateEngine();
+            try
+            {
+                object o = Eval.JScriptEvaluate(expression, engine);
+                return System.Convert.ToString(o);
             }
             catch
             {
