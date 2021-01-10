@@ -449,16 +449,12 @@ namespace compiladorR.Analisis.Gramaticas
                 else_ + reglaIf + llavesAbrir_ + llavesCerrar_ + bloqueElse |
                 else_ + reglaIf + llavesAbrir_ + cuerpoPrograma + llavesCerrar_ + bloqueElse;
 
-            reglaSwitch.Rule = switch_ + parentesisAbrir_ + nombre + parentesisCerrar_ + llavesAbrir_ + bloqueSwitch + llavesCerrar_;
+            reglaSwitch.Rule = switch_ + parentesisAbrir_ + valor + parentesisCerrar_ + llavesAbrir_ + bloqueSwitch + llavesCerrar_;
 
             bloqueSwitch.Rule = caso | caso + bloqueSwitch;
 
-            caso.Rule = case_ + valor + dosPuntos_ |
-                case_ + valor + dosPuntos_ + cuerpoPrograma |
-                case_ + valor + dosPuntos_ + break_ + puntoComa_ |
+            caso.Rule = case_ + valor + dosPuntos_ + break_ + puntoComa_ |
                 case_ + valor + dosPuntos_ + cuerpoPrograma + break_ + puntoComa_ |
-                default_ + dosPuntos_ |
-                default_ + dosPuntos_ + cuerpoPrograma |
                 default_ + dosPuntos_ + break_ + puntoComa_ |
                 default_ + dosPuntos_ + cuerpoPrograma + break_ + puntoComa_;
 

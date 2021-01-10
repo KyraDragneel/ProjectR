@@ -111,16 +111,19 @@ public class miClase
 		switch(variable)
 		{
 			case 1:
+				break;
 
 			case 'a':
-			System.out.println("Hola mundo");
+				System.out.println("Hola mundo");
+				break;
 
 			case "asd":
-			System.out.println("Hola mundo");
-			break;
+				System.out.println("Hola mundo");
+				break;
 
 			default:
-			System.out.println("Hola mundo");
+				System.out.println("Hola mundo");
+				break;
 		}
 
 		for(int i = 0; i < variable; i++)
