@@ -7,6 +7,7 @@ public class miClase
 
 		Scanner leer = new Scanner(System.in);
 
+		int true;
 		int i1 = 0;
 		int i2 = 1;
 		//int i3 = leer.nextInt();
@@ -98,6 +99,42 @@ public class miClase
 			{
 				System.out.println("i7 vale 0");
 			}
+		}
+
+		switch(i2)
+		{
+			case 1:
+				
+				System.out.println("Entre en el caso 1");
+
+				switch(i6)
+				{
+					case 4:
+						System.out.println("Entre en el caso 4");
+						break;
+
+					case 5:
+						System.out.println("Entre en el caso 5");
+						break;
+
+					case 6:
+						System.out.println("Entre en el caso 6");
+						break;
+				}
+
+				break;
+
+			case 2:
+				System.out.println("Entre al caso 2");
+				break;
+
+			case 3:
+				System.out.println("Entre al caso 3");
+				break;
+
+			default:
+				System.out.println("Entre al caso default");
+				break;
 		}
 	}
 }

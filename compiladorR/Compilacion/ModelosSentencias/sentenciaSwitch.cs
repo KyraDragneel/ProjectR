@@ -7,41 +7,41 @@ using System.Threading.Tasks;
 
 namespace compiladorR.Compilacion.ModelosSentencias
 {
-    class sentenciaIf
+    class sentenciaSwitch
     {
         private List<elementoToken> tokens;
-        private string condicion;
+        private string caso;
 
-        public sentenciaIf()
+        public sentenciaSwitch()
         {
             tokens = new List<elementoToken>();
-            condicion = "";
+            caso = "";
         }
 
-        public sentenciaIf(string condicion, List<elementoToken> tokens)
-        {
-            this.tokens = new List<elementoToken>();
-            for(int i = 0; i < tokens.Count; i++)
-            {
-                this.tokens.Add(tokens[i]);
-            }
-            this.condicion = condicion;
-        }
-
-        public sentenciaIf(string condicion)
-        {
-            this.tokens = new List<elementoToken>();
-            this.condicion = condicion;
-        }
-
-        public sentenciaIf(List<elementoToken> tokens)
+        public sentenciaSwitch(string caso, List<elementoToken> tokens)
         {
             this.tokens = new List<elementoToken>();
             for (int i = 0; i < tokens.Count; i++)
             {
                 this.tokens.Add(tokens[i]);
             }
-            this.condicion = "";
+            this.caso = caso;
+        }
+
+        public sentenciaSwitch(string caso)
+        {
+            this.tokens = new List<elementoToken>();
+            this.caso = caso;
+        }
+
+        public sentenciaSwitch(List<elementoToken> tokens)
+        {
+            this.tokens = new List<elementoToken>();
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                this.tokens.Add(tokens[i]);
+            }
+            this.caso = "";
         }
 
         public List<elementoToken> getTokens()
@@ -59,14 +59,14 @@ namespace compiladorR.Compilacion.ModelosSentencias
             this.tokens = tokens;
         }
 
-        public string getCondicion()
+        public string getCaso()
         {
-            return this.condicion;
+            return this.caso;
         }
 
-        public void setCondicion(string condicion)
+        public void setCaso(string caso)
         {
-            this.condicion = condicion;
+            this.caso = caso;
         }
     }
 }
