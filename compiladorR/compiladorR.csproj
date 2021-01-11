@@ -128,6 +128,7 @@
     <Content Include="CodigosFuente\ejemploMuestra.txt" />
     <Content Include="CodigosFuente\ejemploSwitch.txt" />
     <Content Include="CodigosFuente\ejemploVariables.txt" />
+    <Content Include="CodigosFuente\ejemploWhile.txt" />
     <Content Include="CodigosFuente\pruebaConcatenaciones.txt" />
     <Content Include="CodigosFuente\pruebaContenidoValores.txt" />
     <Content Include="CodigosFuente\pruebaExpresiones.txt" />

@@ -146,14 +146,14 @@ namespace compiladorR
                     {
                         limpiarMemoria();
                         compilarInstrucciones(lista);
-                        
+                        /*
                         Console.WriteLine("Variables Int");
                         for(int i = 0; i < variablesInt.Count; i++)
                         {
                             Console.WriteLine("Nombre: "+variablesInt[i].getNombre()+" Valor: "+variablesInt[i].getValor());
                         }
                         Console.WriteLine("");
-                        /*
+                        
                         Console.WriteLine("Variables Float");
                         for (int i = 0; i < variablesFloat.Count; i++)
                         {
@@ -224,6 +224,8 @@ namespace compiladorR
                         valorStop = true;
                         cambiarPanelEstado();
                         areaResultado.AppendText("Error: "+ex.Message + "\n");
+                        areaResultado.SelectionStart = areaResultado.Text.Length;
+                        areaResultado.ScrollToCaret();
                     }                  
                 }
                 else
@@ -235,6 +237,8 @@ namespace compiladorR
                     for (int i = 0; i < listaErrores.Count; i++)
                     {
                         areaResultado.AppendText(listaErrores[i] + "\n");
+                        areaResultado.SelectionStart = areaResultado.Text.Length;
+                        areaResultado.ScrollToCaret();
                     }
                 }
             }
@@ -250,6 +254,7 @@ namespace compiladorR
             variablesBoolean.Clear();
 
             sentenciasIf.Clear();
+            sentenciasSwitch.Clear();
         }
 
         private void compilarInstrucciones(List<elementoToken> tokens)
@@ -501,6 +506,53 @@ namespace compiladorR
                         return;
                     }
                 }
+                else if (tokens[i].getNombre().Equals("while"))
+                {
+                    posicionTermino = i;
+                    int posicionPrimerCorchete = i;
+                    int contadorCorchetes = 0;
+
+                    for (int j = i + 1; j < tokens.Count; j++)
+                    {
+                        if (tokens[j].getNombre().Equals("{"))
+                        {
+                            posicionPrimerCorchete = j;
+                            contadorCorchetes++;
+                            j = tokens.Count;
+                        }
+                    }
+
+                    for (int j = posicionPrimerCorchete + 1; j < tokens.Count; j++)
+                    {
+                        if (tokens[j].getNombre().Equals("{"))
+                        {
+                            contadorCorchetes++;
+                        }
+
+                        if (tokens[j].getNombre().Equals("}"))
+                        {
+                            contadorCorchetes--;
+                        }
+
+                        if (contadorCorchetes == 0)
+                        {
+                            posicionTermino = j;
+                            j = tokens.Count;
+                        }
+                    }
+
+                    lineaEjecutada = obtenerTokensLinea(tokens, i, posicionTermino);
+
+                    i = posicionTermino;
+
+                    evaluarWhile(lineaEjecutada);
+
+                    if (valorStop == true)
+                    {
+                        cambiarPanelEstado();
+                        return;
+                    }
+                }
             }
         }
 
@@ -530,10 +582,14 @@ namespace compiladorR
                                 if(nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
                                 areaResultado.AppendText(nuevoValor + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
                                 variablesInt.Add(new tipoInt(variablesDetectadas[i].getNombre(), Int32.Parse(nuevoValor)));
                             }
                             else if (!variablesDetectadas[i].getValor().Equals(""))
@@ -584,10 +640,14 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
                                 areaResultado.AppendText(nuevoValor + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
                                 variablesFloat.Add(new tipoFloat(variablesDetectadas[i].getNombre(), float.Parse(nuevoValor)));
                             }
                             else if (!variablesDetectadas[i].getValor().Equals(""))
@@ -638,10 +698,14 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
                                 areaResultado.AppendText(nuevoValor + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
                                 variablesDouble.Add(new tipoDouble(variablesDetectadas[i].getNombre(), double.Parse(nuevoValor)));
                             }
                             else if (!variablesDetectadas[i].getValor().Equals(""))
@@ -692,10 +756,14 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
                                 areaResultado.AppendText(nuevoValor + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
                                 variablesString.Add(new tipoString(variablesDetectadas[i].getNombre(), nuevoValor));
                             }
                             else if (!variablesDetectadas[i].getValor().Equals(""))
@@ -864,10 +932,14 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
                                 areaResultado.AppendText(nuevoValor + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
                                 variablesChar.Add(new tipoChar(variablesDetectadas[i].getNombre(), nuevoValor[0]));
                             }
                             else if (!variablesDetectadas[i].getValor().Equals(""))
@@ -924,10 +996,14 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
                                 areaResultado.AppendText(nuevoValor + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
                                 variablesBoolean.Add(new tipoBoolean(variablesDetectadas[i].getNombre(), bool.Parse(nuevoValor)));
                             }
                             else if (!variablesDetectadas[i].getValor().Equals(""))
@@ -977,6 +1053,8 @@ namespace compiladorR
 
                         default:
                             areaResultado.AppendText("Error: Declaracion de variable no permitida");
+                            areaResultado.SelectionStart = areaResultado.Text.Length;
+                            areaResultado.ScrollToCaret();
                             valorStop = true;
                             return;
                             break;
@@ -986,6 +1064,8 @@ namespace compiladorR
             catch(Exception ex)
             {
                 areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.SelectionStart = areaResultado.Text.Length;
+                areaResultado.ScrollToCaret();
                 valorStop = true;
                 return;
             }          
@@ -993,7 +1073,6 @@ namespace compiladorR
 
         private void imprimirPantalla(List<elementoToken> linea)
         {
-            Console.WriteLine("Entre en imprimir pantalla");
             try
             {
                 string nuevoValor;
@@ -1006,9 +1085,7 @@ namespace compiladorR
                         {
                             if (linea[i].getNombre().Equals(variablesInt[j].getNombre()))
                             {
-                                Console.WriteLine("Entre en el arreglo de variables enteras");
                                 linea[i].setNombre(variablesInt[j].getValor().ToString());
-                                Console.WriteLine("Reemplace una variable: "+linea[i].getNombre()+" por "+variablesInt[j].getNombre()+" que valia: "+variablesInt[j].getValor());
                             }
                         }
                     }
@@ -1118,6 +1195,8 @@ namespace compiladorR
                                 if (valorEvaluado.Equals("Error"))
                                 {
                                     areaResultado.AppendText("Error: La expresion no ha podido ser evaluada" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
@@ -1142,21 +1221,25 @@ namespace compiladorR
 
                 nuevoValor = nuevoValor.Replace(" + ", "").Replace("\"", "");
 
-                Console.WriteLine("Nuevo valor: "+nuevoValor);
-
                 if(linea[4].getNombre().Equals("println"))
                 {
                     areaResultado.AppendText(nuevoValor + "\n");
+                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                    areaResultado.ScrollToCaret();
                 }
                 else
                 {
                     areaResultado.AppendText(nuevoValor);
+                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                    areaResultado.ScrollToCaret();
                 }
                 
             }
             catch(Exception ex)
             {
                 areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.SelectionStart = areaResultado.Text.Length;
+                areaResultado.ScrollToCaret();
                 valorStop = true;
                 return;
             }
@@ -1166,7 +1249,6 @@ namespace compiladorR
         {
             try
             {
-                Console.WriteLine("Edite una variable: "+linea[0].getNombre());
                 List<elementoVariable> variablesDetectadas = new List<elementoVariable>();
                 List<elementoToken> valoresVariable = new List<elementoToken>();
 
@@ -1254,6 +1336,8 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
@@ -1318,6 +1402,8 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
@@ -1382,6 +1468,8 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
@@ -1446,6 +1534,8 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
@@ -1581,6 +1671,8 @@ namespace compiladorR
                                                 if (valorEvaluado.Equals("Error"))
                                                 {
                                                     areaResultado.AppendText("Error: La expresion no ha podido ser evaluada. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                                    areaResultado.ScrollToCaret();
                                                     valorStop = true;
                                                     return;
                                                 }
@@ -1629,6 +1721,8 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
@@ -1700,6 +1794,8 @@ namespace compiladorR
                                 if (nuevoValor.Equals("close"))
                                 {
                                     areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     valorStop = true;
                                     return;
                                 }
@@ -1764,6 +1860,8 @@ namespace compiladorR
 
                         default:
                             areaResultado.AppendText("Error: Conflictos al editar variables" + "\n");
+                            areaResultado.SelectionStart = areaResultado.Text.Length;
+                            areaResultado.ScrollToCaret();
                             valorStop = true;
                             return;
                             break;
@@ -1773,6 +1871,8 @@ namespace compiladorR
             catch(Exception ex)
             {
                 areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.SelectionStart = areaResultado.Text.Length;
+                areaResultado.ScrollToCaret();
                 valorStop = true;
                 return;
             }
@@ -1827,6 +1927,8 @@ namespace compiladorR
                                 {
                                     valorStop = true;
                                     areaResultado.AppendText("Error: La condicion ingresada no es valida. Linea: " + linea[i].getLinea() + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
                                     return;
                                 }
 
@@ -1897,6 +1999,8 @@ namespace compiladorR
             catch(Exception ex)
             {
                 areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.SelectionStart = areaResultado.Text.Length;
+                areaResultado.ScrollToCaret();
                 valorStop = true;
                 return;
             }
@@ -1944,6 +2048,8 @@ namespace compiladorR
                         {
                             valorStop = true;
                             areaResultado.AppendText("Error: La condicion ingresada no es valida. Linea: " + linea[i].getLinea() + "\n");
+                            areaResultado.SelectionStart = areaResultado.Text.Length;
+                            areaResultado.ScrollToCaret();
                             return;
                         }
 
@@ -2010,6 +2116,8 @@ namespace compiladorR
             catch(Exception ex)
             {
                 areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.SelectionStart = areaResultado.Text.Length;
+                areaResultado.ScrollToCaret();
                 valorStop = true;
                 return;
             }
@@ -2107,7 +2215,7 @@ namespace compiladorR
 
                 compilarInstrucciones(tokensValor);
                 
-                while(evaluarCondicion(reemplazarVariablesCondicion(condicion)).Equals("True"))
+                while(evaluarCondicion(reemplazarVariablesCondicion(condicion)).Equals("True") && valorStop == false)
                 {
                     compilarInstrucciones(tokensInstrucciones);
                     compilarInstrucciones(tokensIncremento);
@@ -2117,14 +2225,102 @@ namespace compiladorR
                     for(int i = 0; i < tokensInstruccionesAux.Count; i++)
                     {
                         tokensInstrucciones.Add(new elementoToken(tokensInstruccionesAux[i].getNombre(),tokensInstruccionesAux[i].getTipo(),tokensInstruccionesAux[i].getLinea()));
-                        Console.Write(tokensInstrucciones[i].getNombre()+" ");
                     }
-                    Console.WriteLine("");
                 }
             }
             catch(Exception ex)
             {
                 areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.SelectionStart = areaResultado.Text.Length;
+                areaResultado.ScrollToCaret();
+                valorStop = true;
+                return;
+            }
+        }
+
+        private void evaluarWhile(List<elementoToken> linea)
+        {         
+            try
+            {
+                int contadorCorchetes = 0;
+                int contadorParentesis = 0;
+                int puntoControl = 0;
+
+                List<elementoToken> tokensCondiciones = new List<elementoToken>();
+                List<elementoToken> tokensInstrucciones = new List<elementoToken>();
+                List<elementoToken> tokensInstruccionesAux = new List<elementoToken>();
+
+                string condicion = "";
+
+                for (int i = 1; i < linea.Count; i++)
+                {
+                    if (linea[i].getNombre().Equals("("))
+                    {
+                        contadorParentesis++;
+                    }
+                    else if (linea[i].getNombre().Equals(")"))
+                    {
+                        contadorParentesis--;
+                    }
+
+                    tokensCondiciones.Add(linea[i]);
+
+                    if (contadorParentesis == 0)
+                    {
+                        puntoControl = i;
+                        i = linea.Count;
+                    }
+                }
+
+                for (int i = puntoControl + 1; i < linea.Count; i++)
+                {
+                    if (linea[i].getNombre().Equals("{"))
+                    {
+                        contadorCorchetes++;
+                    }
+                    else if (linea[i].getNombre().Equals("}"))
+                    {
+                        contadorCorchetes--;
+                    }
+
+                    tokensInstrucciones.Add(new elementoToken(linea[i].getNombre(), linea[i].getTipo(), linea[i].getLinea()));
+                    tokensInstruccionesAux.Add(new elementoToken(linea[i].getNombre(), linea[i].getTipo(), linea[i].getLinea()));
+
+                    if (contadorCorchetes == 0)
+                    {
+                        i = linea.Count;
+                    }
+                }
+
+                for (int i = 0; i < tokensCondiciones.Count; i++)
+                {
+                    if (condicion.Equals(""))
+                    {
+                        condicion = tokensCondiciones[i].getNombre();
+                    }
+                    else
+                    {
+                        condicion = condicion + " " + tokensCondiciones[i].getNombre();
+                    }
+                }
+
+                while (evaluarCondicion(reemplazarVariablesCondicion(condicion)).Equals("True") && valorStop == false)
+                {
+                    compilarInstrucciones(tokensInstrucciones);
+
+                    tokensInstrucciones.Clear();
+
+                    for (int i = 0; i < tokensInstruccionesAux.Count; i++)
+                    {
+                        tokensInstrucciones.Add(new elementoToken(tokensInstruccionesAux[i].getNombre(), tokensInstruccionesAux[i].getTipo(), tokensInstruccionesAux[i].getLinea()));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.SelectionStart = areaResultado.Text.Length;
+                areaResultado.ScrollToCaret();
                 valorStop = true;
                 return;
             }
