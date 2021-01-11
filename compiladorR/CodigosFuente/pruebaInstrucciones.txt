@@ -7,12 +7,14 @@ public class miClase
 
 		Scanner leer = new Scanner(System.in);
 
-		int true;
 		int i1 = 0;
 		int i2 = 1;
+		i2++;
 		//int i3 = leer.nextInt();
 		int i4 = 1 + 2;
 		int i5 = i4 - 1;
+
+		System.out.println("Valor i2: "+i2);
 
 		i1 = 1 + 4 + (3 * i4);
 		//i2 = leer.nextInt();
@@ -65,6 +67,20 @@ public class miClase
 		System.out.println(c2 + " Hola "+s1+" "+b1);
 
 		int i6 = leer.nextInt();
+
+		System.out.println("Primer for de numeros");
+		for(int i = 0; i < i6; i++)
+		{
+			System.out.println("Numero: "+(i+1));
+		}
+		System.out.println("");
+
+		System.out.println("Segundo for de numeros");
+		for(i2 = i6; i2 <= i6*2; i2 = i2 + 2)
+		{
+			System.out.println("Numero: "+(i2+1));
+		}
+		System.out.println("");
 
 		if(i6 == i2)
 		{

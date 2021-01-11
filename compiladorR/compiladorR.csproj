@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="CodigosFuente\ejemploFor.txt" />
     <Content Include="CodigosFuente\ejemploIf.txt" />
     <Content Include="CodigosFuente\ejemploMuestra.txt" />
     <Content Include="CodigosFuente\ejemploSwitch.txt" />
