@@ -146,14 +146,14 @@ namespace compiladorR
                     {
                         limpiarMemoria();
                         compilarInstrucciones(lista);
-                        /*
+                        
                         Console.WriteLine("Variables Int");
                         for(int i = 0; i < variablesInt.Count; i++)
                         {
                             Console.WriteLine("Nombre: "+variablesInt[i].getNombre()+" Valor: "+variablesInt[i].getValor());
                         }
                         Console.WriteLine("");
-
+                        /*
                         Console.WriteLine("Variables Float");
                         for (int i = 0; i < variablesFloat.Count; i++)
                         {
@@ -199,7 +199,7 @@ namespace compiladorR
                                 Console.WriteLine(sentenciasIf[i].getTokens()[j].getNombre());
                             }
                         }
-                        Console.WriteLine("");*/
+                        Console.WriteLine("");
 
                         Console.WriteLine();
                         for (int i = 0; i < sentenciasSwitch.Count; i++)
@@ -211,7 +211,7 @@ namespace compiladorR
                                 Console.WriteLine(sentenciasSwitch[i].getTokens()[j].getNombre());
                             }
                         }
-                        Console.WriteLine("");
+                        Console.WriteLine("");*/
 
                         if (valorStop == false)
                         {
@@ -412,7 +412,6 @@ namespace compiladorR
                     posicionTermino = i;
                     int posicionPrimerCorchete = i;
                     int contadorCorchetes = 0;
-                    bool seguroElse = false;
 
                     for (int j = i + 1; j < tokens.Count; j++)
                     {
@@ -429,7 +428,6 @@ namespace compiladorR
                         if (tokens[j].getNombre().Equals("{"))
                         {
                             contadorCorchetes++;
-                            seguroElse = false;
                         }
 
                         if (tokens[j].getNombre().Equals("}"))
@@ -437,17 +435,10 @@ namespace compiladorR
                             contadorCorchetes--;
                         }
 
-                        if (contadorCorchetes == 0 && seguroElse == false)
+                        if (contadorCorchetes == 0)
                         {
-                            if (tokens[j + 1].getNombre().Equals("else"))
-                            {
-                                seguroElse = true;
-                            }
-                            else
-                            {
                                 posicionTermino = j;
                                 j = tokens.Count;
-                            }
                         }
                     }
 
@@ -456,6 +447,53 @@ namespace compiladorR
                     i = posicionTermino;
 
                     evaluarSwitch(lineaEjecutada);
+
+                    if (valorStop == true)
+                    {
+                        cambiarPanelEstado();
+                        return;
+                    }
+                }
+                else if(tokens[i].getNombre().Equals("for"))
+                {
+                    posicionTermino = i;
+                    int posicionPrimerCorchete = i;
+                    int contadorCorchetes = 0;
+
+                    for (int j = i + 1; j < tokens.Count; j++)
+                    {
+                        if (tokens[j].getNombre().Equals("{"))
+                        {
+                            posicionPrimerCorchete = j;
+                            contadorCorchetes++;
+                            j = tokens.Count;
+                        }
+                    }
+
+                    for (int j = posicionPrimerCorchete + 1; j < tokens.Count; j++)
+                    {
+                        if (tokens[j].getNombre().Equals("{"))
+                        {
+                            contadorCorchetes++;
+                        }
+
+                        if (tokens[j].getNombre().Equals("}"))
+                        {
+                            contadorCorchetes--;
+                        }
+
+                        if (contadorCorchetes == 0)
+                        {
+                            posicionTermino = j;
+                            j = tokens.Count;
+                        }
+                    }
+
+                    lineaEjecutada = obtenerTokensLinea(tokens, i, posicionTermino);
+
+                    i = posicionTermino;
+
+                    evaluarFor(lineaEjecutada);
 
                     if (valorStop == true)
                     {
@@ -955,6 +993,7 @@ namespace compiladorR
 
         private void imprimirPantalla(List<elementoToken> linea)
         {
+            Console.WriteLine("Entre en imprimir pantalla");
             try
             {
                 string nuevoValor;
@@ -967,7 +1006,9 @@ namespace compiladorR
                         {
                             if (linea[i].getNombre().Equals(variablesInt[j].getNombre()))
                             {
+                                Console.WriteLine("Entre en el arreglo de variables enteras");
                                 linea[i].setNombre(variablesInt[j].getValor().ToString());
+                                Console.WriteLine("Reemplace una variable: "+linea[i].getNombre()+" por "+variablesInt[j].getNombre()+" que valia: "+variablesInt[j].getValor());
                             }
                         }
                     }
@@ -1101,6 +1142,8 @@ namespace compiladorR
 
                 nuevoValor = nuevoValor.Replace(" + ", "").Replace("\"", "");
 
+                Console.WriteLine("Nuevo valor: "+nuevoValor);
+
                 if(linea[4].getNombre().Equals("println"))
                 {
                     areaResultado.AppendText(nuevoValor + "\n");
@@ -1123,6 +1166,7 @@ namespace compiladorR
         {
             try
             {
+                Console.WriteLine("Edite una variable: "+linea[0].getNombre());
                 List<elementoVariable> variablesDetectadas = new List<elementoVariable>();
                 List<elementoToken> valoresVariable = new List<elementoToken>();
 
@@ -1971,6 +2015,121 @@ namespace compiladorR
             }
         }
 
+        private void evaluarFor(List<elementoToken> linea)
+        {
+            try
+            {
+                int contadorCorchetes = 0;
+                int contadorParentesis = 0;
+                int puntoControl = 0;
+                int contadorPuntosComa = 0;
+
+                List<elementoToken> tokensCondiciones = new List<elementoToken>();
+                List<elementoToken> tokensInstrucciones = new List<elementoToken>();
+                List<elementoToken> tokensInstruccionesAux = new List<elementoToken>();
+
+                List<elementoToken> tokensValor = new List<elementoToken>();
+                string condicion = "";
+                List<elementoToken> tokensIncremento = new List<elementoToken>();
+
+                for (int i = 1; i < linea.Count; i++)
+                {
+                    if (linea[i].getNombre().Equals("("))
+                    {
+                        contadorParentesis++;
+                    }
+                    else if (linea[i].getNombre().Equals(")"))
+                    {
+                        contadorParentesis--;
+                    }
+
+                    tokensCondiciones.Add(linea[i]);
+
+                    if (contadorParentesis == 0)
+                    {
+                        puntoControl = i;
+                        i = linea.Count;
+                    }
+                }
+
+                for (int i = puntoControl + 1; i < linea.Count; i++)
+                {
+                    if (linea[i].getNombre().Equals("{"))
+                    {
+                        contadorCorchetes++;
+                    }
+                    else if (linea[i].getNombre().Equals("}"))
+                    {
+                        contadorCorchetes--;
+                    }
+
+                    tokensInstrucciones.Add(new elementoToken(linea[i].getNombre(), linea[i].getTipo(), linea[i].getLinea()));
+                    tokensInstruccionesAux.Add(new elementoToken(linea[i].getNombre(), linea[i].getTipo(), linea[i].getLinea()));
+
+                    if (contadorCorchetes == 0)
+                    {
+                        i = linea.Count;
+                    }
+                }
+
+                for(int i = 0; i < tokensCondiciones.Count; i++)
+                {
+                    if(condicion.Equals(""))
+                    {
+                        condicion = tokensCondiciones[i].getNombre();
+                    }
+                    else
+                    {
+                        condicion = condicion + " " + tokensCondiciones[i].getNombre();
+                    }
+                }
+
+                condicion = condicion.Split(';')[1];
+
+                for(int i = 1; i < tokensCondiciones.Count-1; i++)
+                {
+                    if(contadorPuntosComa == 0)
+                    {
+                        tokensValor.Add(tokensCondiciones[i]);
+                    }
+                    else if (contadorPuntosComa == 2)
+                    {
+                        tokensIncremento.Add(tokensCondiciones[i]);
+                    }
+                    
+                    if (tokensCondiciones[i].getNombre().Equals(";"))
+                    {
+                        contadorPuntosComa++;
+                    }              
+                }
+
+                tokensIncremento.Add(tokensValor[tokensValor.Count-1]);
+
+                compilarInstrucciones(tokensValor);
+                
+                while(evaluarCondicion(reemplazarVariablesCondicion(condicion)).Equals("True"))
+                {
+                    compilarInstrucciones(tokensInstrucciones);
+                    compilarInstrucciones(tokensIncremento);
+
+                    tokensInstrucciones.Clear();
+
+                    for(int i = 0; i < tokensInstruccionesAux.Count; i++)
+                    {
+                        tokensInstrucciones.Add(new elementoToken(tokensInstruccionesAux[i].getNombre(),tokensInstruccionesAux[i].getTipo(),tokensInstruccionesAux[i].getLinea()));
+                        Console.Write(tokensInstrucciones[i].getNombre()+" ");
+                    }
+                    Console.WriteLine("");
+                }
+            }
+            catch(Exception ex)
+            {
+                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                valorStop = true;
+                return;
+            }
+        }
+
         #endregion
 
         #region Metodos auxiliares de compilacion
@@ -2326,8 +2485,9 @@ namespace compiladorR
                 object o = Eval.JScriptEvaluate(expression, engine);
                 return System.Convert.ToDouble(o).ToString();
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine("Error: "+ex.Message);
                 return "Error";
             }
             engine.Close();
@@ -2341,8 +2501,9 @@ namespace compiladorR
                 object o = Eval.JScriptEvaluate(expression, engine);
                 return System.Convert.ToString(o);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("Error: " + ex.Message);
                 return "Error";
             }
             engine.Close();
