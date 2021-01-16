@@ -20,7 +20,7 @@ namespace compiladorR.Analisis.Semantica
 
             for (int i = 0; i < variables.Count; i++)
             {
-                if (!variables[i].getValor().Contains("\"") && (variables[i].getValor().Contains("+") || variables[i].getValor().Contains("-") || variables[i].getValor().Contains("*") || variables[i].getValor().Contains("/") || variables[i].getValor().Contains("%")))
+                if (!variables[i].getValor().Contains("[") && !variables[i].getValor().Contains("\"") && (variables[i].getValor().Contains("+") || variables[i].getValor().Contains("-") || variables[i].getValor().Contains("*") || variables[i].getValor().Contains("/") || variables[i].getValor().Contains("%")))
                 {
                     List<elementoToken> lista = new List<elementoToken>();
 
