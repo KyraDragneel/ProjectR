@@ -5,6 +5,9 @@ public class miClase
 	public static void main(String[] args)
 	{
 	    
+		Scanner leer = new Scanner(System.in);
+
+		int i4 = 0;
 		int i3 = 5;
 		int[] arregloI1 = new int[i3];
 		int[] arregloI2;
@@ -23,6 +26,16 @@ public class miClase
 
 		matrizI2 = matrizI1;
 		matrizI1 = new int[4][4];
+
+		arregloI1[0] = i3;
+		arregloI1[1] = 7;
+		arregloI1[2] = arregloI2[0];
+		//arregloI1[3] = leer.nextInt();
+
+		matrizI1[0][0] = i3;
+		matrizI1[1][1] = 7;
+		matrizI1[2][2] = arregloI2[0];
+		matrizI1[3][3] = leer.nextInt();
 
 		System.out.println("Este es el arreglo int: " + arregloI1[0]);
 		System.out.println("Este es la matriz int: " + matrizI1[0][0]);
@@ -45,6 +58,16 @@ public class miClase
 		matrizF2 = matrizF1;
 		matrizF1 = new float[4][4];
 
+		arregloF1[0] = f0;
+		arregloF1[1] = 7.5;
+		arregloF1[2] = arregloF2[0];
+		//arregloF1[3] = leer.nextFloat();
+
+		matrizF1[0][0] = f0;
+		matrizF1[1][1] = 7.5;
+		matrizF1[2][2] = arregloF2[0];
+		matrizF1[3][3] = leer.nextFloat();
+
 		System.out.println("Este es el arreglo float: " + arregloF1[0]);
 		System.out.println("Este es la matriz float: " + matrizF1[0][0]);
 
@@ -65,6 +88,16 @@ public class miClase
 
 		matrizD2 = matrizD1;
 		matrizD1 = new double[4][4];
+
+		arregloD1[0] = d0;
+		arregloD1[1] = 8.5;
+		arregloD1[2] = arregloD2[0];
+		//arregloD1[3] = leer.nextDouble();
+
+		matrizD1[0][0] = d0;
+		matrizD1[1][1] = 8.5;
+		matrizD1[2][2] = arregloD2[0];
+		matrizD1[3][3] = leer.nextDouble();
 
 		System.out.println("Este es el arreglo double: " + arregloD1[0]);
 		System.out.println("Este es la matriz double: " + matrizD1[0][0]);
@@ -87,6 +120,16 @@ public class miClase
 		matrizS2 = matrizS1;
 		matrizS1 = new String[4][4];
 
+		arregloS1[i4] = s0;
+		arregloS1[1] = "hola prro";
+		arregloS1[2] = arregloS2[0];
+		//arregloS1[3] = leer.next();
+
+		matrizS1[0][i4] = s0;
+		matrizS1[1][1] = "Hola prro";
+		matrizS1[2][2] = arregloS2[0];
+		matrizS1[3][3] = leer.next();
+
 		System.out.println("Este es el arreglo String: " + arregloS1[0]);
 		System.out.println("Este es la matriz String: " + matrizS1[0][0]);
 		
@@ -108,6 +151,16 @@ public class miClase
 		matrizC2 = matrizC1;
 		matrizC1 = new char[4][4];
 
+		arregloC1[0] = c0;
+		arregloC1[1] = 'f';
+		arregloC1[2] = arregloC2[0];
+		//arregloC1[3] = leer.nextChar();
+
+		matrizC1[0][0] = c0;
+		matrizC1[1][1] = 'f';
+		matrizC1[2][2] = arregloC2[0];
+		matrizC1[3][3] = leer.nextChar();
+
 		System.out.println("Este es el arreglo char: " + arregloC1[0]);
 		System.out.println("Este es la matriz char: " + matrizC1[0][0]);
 		
@@ -128,6 +181,16 @@ public class miClase
 
 		matrizB2 = matrizB1;
 		matrizB1 = new boolean[4][4];
+
+		arregloB1[0] = b0;
+		arregloB1[1] = true;
+		arregloB1[2] = arregloB2[0];
+		//arregloB1[3] = leer.nextBoolean();
+
+		matrizB1[0][0] = b0;
+		matrizB1[1][1] = true;
+		matrizB1[2][2] = arregloB2[0];
+		matrizB1[3][3] = leer.nextBoolean();
 
 		System.out.println("Este es el arreglo boolean: " + arregloB1[0]);
 		System.out.println("Este es la matriz boolean: " + matrizB1[0][0]);
