@@ -2733,7 +2733,13 @@ namespace compiladorR
                 string tipoVariable;
                 string nuevoValor;
 
-                for(int i = 0; i < variablesDetectadas.Count; i++)
+                List<elementoToken> tokensPosicion = new List<elementoToken>();
+                string auxPosicion = "";
+                int posicion = 0;
+                int fila = 0;
+                int columna = 0;
+
+                for (int i = 0; i < variablesDetectadas.Count; i++)
                 {
                     tipoVariable = "";
 
@@ -4942,39 +4948,2438 @@ namespace compiladorR
                             break;
 
                         case "int[]=":
+                            #region Modificar valor arreglo int
+
+                            #region Determinar posicion
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            posicion = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("int", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < arreglosInt.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosInt[j].getNombre()))
+                                    {
+                                        arreglosInt[j].setElemento(posicion,Int32.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "int");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosInt.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosInt[j].getNombre()))
+                                    {
+                                        arreglosInt[j].setElemento(posicion,Int32.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosInt.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosInt[j].getNombre()))
+                                    {
+                                        arreglosInt[j].setElemento(posicion,Int32.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+                            #endregion
+
                             break;
 
                         case "float[]=":
+
+                            #region Modificar valor arreglo float
+
+                            #region Determinar posicion
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            posicion = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("float", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < arreglosFloat.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosFloat[j].getNombre()))
+                                    {
+                                        arreglosFloat[j].setElemento(posicion,float.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesFloat.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesFloat[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesFloat[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "float");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosFloat.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosFloat[j].getNombre()))
+                                    {
+                                        arreglosFloat[j].setElemento(posicion,float.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesFloat.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesFloat[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesFloat[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosFloat.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosFloat[j].getNombre()))
+                                    {
+                                        arreglosFloat[j].setElemento(posicion,float.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "double[]=":
+
+                            #region Modificar valor arreglo double
+
+                            #region Determinar posicion
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            posicion = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("double", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < arreglosDouble.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosDouble[j].getNombre()))
+                                    {
+                                        arreglosDouble[j].setElemento(posicion,double.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesDouble.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesDouble[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesDouble[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "double");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosDouble.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosDouble[j].getNombre()))
+                                    {
+                                        arreglosDouble[j].setElemento(posicion,double.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesDouble.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesDouble[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesDouble[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosDouble.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosDouble[j].getNombre()))
+                                    {
+                                        arreglosDouble[j].setElemento(posicion,double.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "String[]=":
+
+                            #region Modificar valor arreglo String
+
+                            #region Determinar posicion
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            posicion = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("String", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < arreglosString.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosString[j].getNombre()))
+                                    {
+                                        arreglosString[j].setElemento(posicion,nuevoValor);
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesString.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesString[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesString[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "String");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosString.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosString[j].getNombre()))
+                                    {
+                                        arreglosString[j].setElemento(posicion,variablesDetectadas[i].getValor());
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesFloat.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesFloat[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesFloat[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesDouble.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesDouble[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesDouble[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesString.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesString[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesString[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesChar.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesChar[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesChar[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesBoolean.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesBoolean[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesBoolean[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getNombre().Equals("("))
+                                    {
+                                        int contadorParentesis = 1;
+                                        string valorEvaluado = "(";
+
+                                        for (int k = j + 1; k < valoresVariable.Count; k++)
+                                        {
+                                            if (valoresVariable[k].getNombre().Equals("("))
+                                            {
+                                                contadorParentesis++;
+                                                valorEvaluado = valorEvaluado + " " + "(";
+                                                valoresVariable[k].setNombre("");
+                                            }
+                                            else if (valoresVariable[k].getNombre().Equals(")"))
+                                            {
+                                                contadorParentesis--;
+                                                valorEvaluado = valorEvaluado + " " + ")";
+                                                valoresVariable[k].setNombre("");
+                                            }
+                                            else
+                                            {
+                                                valorEvaluado = valorEvaluado + " " + valoresVariable[k].getNombre();
+                                                valoresVariable[k].setNombre("");
+                                            }
+
+                                            if (contadorParentesis == 0)
+                                            {
+                                                valorEvaluado = evaluarExpresion(valorEvaluado);
+
+                                                if (valorEvaluado.Equals("Error"))
+                                                {
+                                                    areaResultado.AppendText("Error: La expresion no ha podido ser evaluada. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                                    areaResultado.ScrollToCaret();
+                                                    valorStop = true;
+                                                    return;
+                                                }
+
+                                                valoresVariable[j].setNombre(valorEvaluado);
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = nuevoValor.Replace(" + ", "").Replace("\"", "");
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosString.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosString[j].getNombre()))
+                                    {
+                                        arreglosString[j].setElemento(posicion,variablesDetectadas[i].getValor());
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "char[]=":
+
+                            #region Modificar valor arreglo char
+
+                            #region Determinar posicion
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            posicion = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("char", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < arreglosChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosChar[j].getNombre()))
+                                    {
+                                        arreglosChar[j].setElemento(posicion,nuevoValor[0]);
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesChar.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesChar[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesChar[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "char");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosChar[j].getNombre()))
+                                    {
+                                        arreglosChar[j].setElemento(posicion,variablesDetectadas[i].getValor()[0]);
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Contains("'"))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesChar.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesChar[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesChar[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosChar[j].getNombre()))
+                                    {
+                                        arreglosChar[j].setElemento(posicion,variablesDetectadas[i].getValor()[0]);
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("'"))
+                            {
+                                for (int j = 0; j < arreglosChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosChar[j].getNombre()))
+                                    {
+                                        arreglosChar[j].setElemento(posicion,variablesDetectadas[i].getValor()[1]);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "boolean[]=":
+
+                            #region Modificar valor arreglo boolean
+
+                            #region Determinar posicion
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            posicion = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("boolean", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < arreglosBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosBoolean[j].getNombre()))
+                                    {
+                                        arreglosBoolean[j].setElemento(posicion,bool.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesBoolean.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesBoolean[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesBoolean[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "boolean");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarCondicion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosBoolean[j].getNombre()))
+                                    {
+                                        arreglosBoolean[j].setElemento(posicion,bool.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Contains("true") && !variablesDetectadas[i].getValor().Contains("false"))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesBoolean.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesBoolean[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesBoolean[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < arreglosBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosBoolean[j].getNombre()))
+                                    {
+                                        arreglosBoolean[j].setElemento(posicion,bool.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                for (int j = 0; j < arreglosBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(arreglosBoolean[j].getNombre()))
+                                    {
+                                        arreglosBoolean[j].setElemento(posicion,bool.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "int[][]=":
+
+                            #region Modificar valor matriz int
+
+                            #region Definir posiciones
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            fila = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            columna = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[2].Replace("]", "")));
+
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("int", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < matricesInt.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesInt[j].getNombre()))
+                                    {
+                                        matricesInt[j].setElemento(fila,columna,Int32.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "int");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesInt.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesInt[j].getNombre()))
+                                    {
+                                        matricesInt[j].setElemento(fila,columna,Int32.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesInt.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesInt[j].getNombre()))
+                                    {
+                                        matricesInt[j].setElemento(fila,columna,Int32.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "float[][]=":
+
+                            #region Modificar valor matriz float
+
+                            #region Definir posiciones
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            fila = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            columna = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[2].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("float", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < matricesFloat.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesFloat[j].getNombre()))
+                                    {
+                                        matricesFloat[j].setElemento(fila,columna, float.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesFloat.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesFloat[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesFloat[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "float");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesFloat.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesFloat[j].getNombre()))
+                                    {
+                                        matricesFloat[j].setElemento(fila,columna, float.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesFloat.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesFloat[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesFloat[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesFloat.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesFloat[j].getNombre()))
+                                    {
+                                        matricesFloat[j].setElemento(fila, columna, float.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "double[][]=":
+
+                            #region Modificar valor matriz double
+
+                            #region Definir posiciones
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            fila = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            columna = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[2].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("double", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < matricesDouble.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesDouble[j].getNombre()))
+                                    {
+                                        matricesDouble[j].setElemento(fila,columna, double.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesDouble.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesDouble[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesDouble[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "double");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesDouble.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesDouble[j].getNombre()))
+                                    {
+                                        matricesDouble[j].setElemento(fila,columna, double.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesDouble.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesDouble[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesDouble[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesDouble.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesDouble[j].getNombre()))
+                                    {
+                                        matricesDouble[j].setElemento(fila, columna, double.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "String[][]=":
+
+                            #region Modificar valor matriz String
+
+                            #region Definir posiciones
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            fila = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            columna = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[2].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("String", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < matricesString.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesString[j].getNombre()))
+                                    {
+                                        matricesString[j].setElemento(fila, columna, nuevoValor);
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesString.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesString[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesString[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "String");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesString.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesString[j].getNombre()))
+                                    {
+                                        matricesString[j].setElemento(fila, columna, variablesDetectadas[i].getValor());
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesFloat.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesFloat[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesFloat[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesDouble.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesDouble[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesDouble[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesString.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesString[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesString[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesChar.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesChar[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesChar[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesBoolean.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesBoolean[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesBoolean[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getNombre().Equals("("))
+                                    {
+                                        int contadorParentesis = 1;
+                                        string valorEvaluado = "(";
+
+                                        for (int k = j + 1; k < valoresVariable.Count; k++)
+                                        {
+                                            if (valoresVariable[k].getNombre().Equals("("))
+                                            {
+                                                contadorParentesis++;
+                                                valorEvaluado = valorEvaluado + " " + "(";
+                                                valoresVariable[k].setNombre("");
+                                            }
+                                            else if (valoresVariable[k].getNombre().Equals(")"))
+                                            {
+                                                contadorParentesis--;
+                                                valorEvaluado = valorEvaluado + " " + ")";
+                                                valoresVariable[k].setNombre("");
+                                            }
+                                            else
+                                            {
+                                                valorEvaluado = valorEvaluado + " " + valoresVariable[k].getNombre();
+                                                valoresVariable[k].setNombre("");
+                                            }
+
+                                            if (contadorParentesis == 0)
+                                            {
+                                                valorEvaluado = evaluarExpresion(valorEvaluado);
+
+                                                if (valorEvaluado.Equals("Error"))
+                                                {
+                                                    areaResultado.AppendText("Error: La expresion no ha podido ser evaluada. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                                    areaResultado.ScrollToCaret();
+                                                    valorStop = true;
+                                                    return;
+                                                }
+
+                                                valoresVariable[j].setNombre(valorEvaluado);
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = nuevoValor.Replace(" + ", "").Replace("\"", "");
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesString.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesString[j].getNombre()))
+                                    {
+                                        matricesString[j].setElemento(fila, columna, variablesDetectadas[i].getValor());
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "char[][]=":
+
+                            #region Modificar valor matriz char
+
+                            #region Definir posiciones
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            fila = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            columna = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[2].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("char", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < matricesChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesChar[j].getNombre()))
+                                    {
+                                        matricesChar[j].setElemento(fila, columna, nuevoValor[0]);
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesChar.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesChar[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesChar[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "char");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarExpresion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesChar[j].getNombre()))
+                                    {
+                                        matricesChar[j].setElemento(fila, columna, variablesDetectadas[i].getValor()[0]);
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Contains("'"))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesChar.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesChar[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesChar[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesChar[j].getNombre()))
+                                    {
+                                        matricesChar[j].setElemento(fila, columna, variablesDetectadas[i].getValor()[0]);
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("'"))
+                            {
+                                for (int j = 0; j < matricesChar.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesChar[j].getNombre()))
+                                    {
+                                        matricesChar[j].setElemento(fila, columna, variablesDetectadas[i].getValor()[1]);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         case "boolean[][]=":
+
+                            #region Modificar valor matriz boolean
+
+                            #region Definir posiciones
+                            tokensPosicion = new List<elementoToken>();
+                            auxPosicion = "";
+
+                            tokensPosicion = generarTokensConcatenacion(variablesDetectadas[i].getNombre());
+
+                            for (int j = 0; j < tokensPosicion.Count; j++)
+                            {
+                                if (tokensPosicion[j].getTipo().Equals("id"))
+                                {
+                                    for (int k = 0; k < variablesInt.Count; k++)
+                                    {
+                                        if (tokensPosicion[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                        {
+                                            tokensPosicion[j].setNombre(variablesInt[k].getValor().ToString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            auxPosicion = tokensPosicion[0].getNombre();
+
+                            for (int j = 1; j < tokensPosicion.Count; j++)
+                            {
+                                auxPosicion = auxPosicion + " " + tokensPosicion[j].getNombre();
+                            }
+
+                            fila = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[1].Replace("]", "")));
+                            columna = Int32.Parse(evaluarCondicion(auxPosicion.Split('[')[2].Replace("]", "")));
+                            #endregion
+
+                            if (variablesDetectadas[i].getValor().Contains(".next"))
+                            {
+                                nuevoValor = Form2.Show("boolean", variablesDetectadas[i].getNombre());
+                                if (nuevoValor.Equals("close"))
+                                {
+                                    areaResultado.AppendText("Programa Detenido" + "\n");
+                                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                                    areaResultado.ScrollToCaret();
+                                    valorStop = true;
+                                    return;
+                                }
+                                areaResultado.AppendText(nuevoValor + "\n");
+
+                                for (int j = 0; j < matricesBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesBoolean[j].getNombre()))
+                                    {
+                                        matricesBoolean[j].setElemento(fila, columna, bool.Parse(nuevoValor));
+                                    }
+                                }
+                            }
+                            else if (variablesDetectadas[i].getValor().Contains("["))
+                            {
+                                List<elementoToken> elementosEstructura = new List<elementoToken>();
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesBoolean.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesBoolean[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesBoolean[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesInt.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesInt[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesInt[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.Add(new elementoToken());
+
+                                for (int j = 0; j < valoresVariable.Count - 1; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id") && valoresVariable[j + 1].getNombre().Equals("["))
+                                    {
+                                        for (int k = j; k < valoresVariable.Count - 1; k++)
+                                        {
+                                            elementosEstructura.Add(valoresVariable[k]);
+
+                                            if (valoresVariable[k].getNombre().Equals("]") && !valoresVariable[k + 1].getNombre().Equals("["))
+                                            {
+                                                evaluarEstructura(elementosEstructura, "boolean");
+                                                j = k;
+                                                k = valoresVariable.Count;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                valoresVariable.RemoveAt(valoresVariable.Count - 1);
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    if (!valoresVariable[j].getNombre().Equals(""))
+                                    {
+                                        nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                    }
+                                }
+
+                                nuevoValor = evaluarCondicion(nuevoValor);
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesBoolean[j].getNombre()))
+                                    {
+                                        matricesBoolean[j].setElemento(fila, columna, bool.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Contains("true") && !variablesDetectadas[i].getValor().Contains("false"))
+                            {
+                                valoresVariable = generarTokensConcatenacion(variablesDetectadas[i].getValor());
+
+                                for (int j = 0; j < valoresVariable.Count; j++)
+                                {
+                                    if (valoresVariable[j].getTipo().Equals("id"))
+                                    {
+                                        for (int k = 0; k < variablesBoolean.Count; k++)
+                                        {
+                                            if (valoresVariable[j].getNombre().Equals(variablesBoolean[k].getNombre()))
+                                            {
+                                                valoresVariable[j].setNombre(variablesBoolean[k].getValor().ToString());
+                                            }
+                                        }
+                                    }
+                                }
+
+                                nuevoValor = valoresVariable[0].getNombre();
+
+                                for (int j = 1; j < valoresVariable.Count; j++)
+                                {
+                                    nuevoValor = nuevoValor + " " + valoresVariable[j].getNombre();
+                                }
+
+                                variablesDetectadas[i].setValor(nuevoValor);
+
+                                for (int j = 0; j < matricesBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesBoolean[j].getNombre()))
+                                    {
+                                        matricesBoolean[j].setElemento(fila, columna, bool.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else if (!variablesDetectadas[i].getValor().Equals(""))
+                            {
+                                for (int j = 0; j < matricesBoolean.Count; j++)
+                                {
+                                    if (variablesDetectadas[i].getNombre().Split('[')[0].Equals(matricesBoolean[j].getNombre()))
+                                    {
+                                        matricesBoolean[j].setElemento(fila, columna, bool.Parse(variablesDetectadas[i].getValor()));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                areaResultado.AppendText("Error: Asignacion no valida. Linea: " + variablesDetectadas[i].getLinea() + "\n");
+                                areaResultado.SelectionStart = areaResultado.Text.Length;
+                                areaResultado.ScrollToCaret();
+                                valorStop = true;
+                                return;
+                            }
+
+                            #endregion
+
                             break;
 
                         default:

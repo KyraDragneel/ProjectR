@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="CodigosFuente\ejemploArreglos.txt" />
     <Content Include="CodigosFuente\ejemploDoWhile.txt" />
     <Content Include="CodigosFuente\ejemploFor.txt" />
     <Content Include="CodigosFuente\ejemploIf.txt" />
