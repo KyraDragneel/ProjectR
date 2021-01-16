@@ -369,10 +369,12 @@ namespace compiladorR.Analisis.Gramaticas
 
             definicionArreglo.Rule = corcheteAbrir_ + corcheteCerrar_ + nombre |
                 nombre + corcheteAbrir_ + corcheteCerrar_ |
+                corcheteAbrir_ + corcheteCerrar_ + nombre + igual_ + nombre |
                 corcheteAbrir_ + corcheteCerrar_ + nombre + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ |
                 nombre + corcheteAbrir_ + corcheteCerrar_ + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ |
                 corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + nombre |
                 nombre + corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ |
+                corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + nombre + igual_ + new_ + nombre |
                 corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + nombre + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ |
                 nombre + corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_;
 
