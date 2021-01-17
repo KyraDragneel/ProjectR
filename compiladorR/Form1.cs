@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace compiladorR
     public partial class Form1 : Form
     {
 
+        #region Memoria del compilador
         List<tipoBoolean> variablesBoolean = new List<tipoBoolean>();
         List<tipoChar> variablesChar = new List<tipoChar>();
         List<tipoDouble> variablesDouble = new List<tipoDouble>();
@@ -45,8 +47,18 @@ namespace compiladorR
         List<matrizString> matricesString = new List<matrizString>();
         List<matrizChar> matricesChar = new List<matrizChar>();
         List<matrizBoolean> matricesBoolean = new List<matrizBoolean>();
+        #endregion
 
         bool valorStop;
+
+        #region Variables documentos
+
+        string rutaA = "";
+        string rutaG = "";
+        string nombre = "";
+        string contenidoArchivo = "";
+
+        #endregion
 
         public Form1()
         {
@@ -161,7 +173,7 @@ namespace compiladorR
                     {
                         limpiarMemoria();
                         compilarInstrucciones(lista);
-                        
+                        /*
                         Console.WriteLine("Variables Int");
                         for(int i = 0; i < variablesInt.Count; i++)
                         {
@@ -203,7 +215,7 @@ namespace compiladorR
                             Console.WriteLine("Nombre: " + variablesBoolean[i].getNombre() + " Valor: " + variablesBoolean[i].getValor());
                         }
                         Console.WriteLine("");
-                        /*
+                        
                         Console.WriteLine();
                         for(int i = 0; i < sentenciasIf.Count; i++)
                         {
@@ -227,7 +239,7 @@ namespace compiladorR
                             }
                         }
                         Console.WriteLine("");
-                        */
+                        
                         Console.WriteLine("Arreglos Int");
                         for(int i = 0; i < arreglosInt.Count; i++)
                         {
@@ -378,7 +390,7 @@ namespace compiladorR
                             }
                         }
                         Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------------");
-
+                        */
                         if (valorStop == false)
                         {
                             areaResultado.AppendText("Proceso finalizado" + "\n");
@@ -8762,6 +8774,150 @@ namespace compiladorR
                 panelEstado.GradientBottomRight = Color.FromArgb(16, 169, 104);
                 panelEstado.GradientTopLeft = Color.FromArgb(16, 169, 104);
                 panelEstado.GradientTopRight = Color.FromArgb(46, 230, 71);
+            }
+        }
+
+        private void nuevoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(!entrada.Text.Equals(contenidoArchivo))
+            {
+                string respuesta = Form3.Show();
+
+                if (respuesta.Equals("si"))
+                {
+                    if (!rutaA.Equals(""))
+                    {
+                        Guardar();
+                    }
+                    else
+                    {
+                        GuardarComo();
+                    }
+                }
+            }
+
+            nomArchivo.Text = "Sin titulo";
+            entrada.Clear();
+            rutaA = "";
+            rutaG = "";
+            contenidoArchivo = "";
+        }
+
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(!entrada.Text.Equals(contenidoArchivo))
+            {
+                string respuesta = Form3.Show();
+
+                if (respuesta.Equals("si"))
+                {
+                    if (!rutaA.Equals(""))
+                    {
+                        Guardar();
+                    }
+                    else
+                    {
+                        GuardarComo();
+                    }
+                }
+            }
+
+            OpenFileDialog abrir = new OpenFileDialog();
+            abrir.Filter = "All files (*.*)|*.*| java files (*.java)|*.java";
+            abrir.FilterIndex = 3;
+            abrir.RestoreDirectory = true;
+
+            if (abrir.ShowDialog() == DialogResult.OK)
+            {
+                entrada.Clear();
+                contenidoArchivo = "";
+                rutaA = abrir.FileName;
+                StreamReader leer = new StreamReader(rutaA);
+
+                string linea;
+
+                try
+                {
+                    linea = leer.ReadLine();
+                    while (linea != null)
+                    {
+                        contenidoArchivo = contenidoArchivo + linea + "\n";
+                        entrada.AppendText(linea + "\n");
+                        linea = leer.ReadLine();
+                    }
+
+                    nombre = rutaA.Split('\\')[rutaA.Split('\\').Length - 1];
+                    nomArchivo.Text = nombre;
+                    leer.Close();
+                }
+                catch (Exception ex)
+                {
+                    areaResultado.AppendText("error: " + ex.Message + "");
+                    areaResultado.SelectionStart = areaResultado.Text.Length;
+                    areaResultado.ScrollToCaret();
+                }
+            }
+        }
+
+        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!rutaA.Equals(""))
+            {
+                Guardar();
+            }
+            else
+            {
+                GuardarComo();
+            }
+        }
+
+        private void guardarComoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GuardarComo();
+        }
+
+        private void Guardar()
+        {
+            try
+            {
+                StreamWriter escribir = new StreamWriter(rutaA);
+
+                escribir.WriteLine(entrada.Text);
+                contenidoArchivo = entrada.Text;
+
+                escribir.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrio un error: " + ex.Message);
+            }
+        }
+
+        private void GuardarComo()
+        {
+            SaveFileDialog guardar = new SaveFileDialog();
+            guardar.Filter = "All files (*.*)|*.*| java files (*.java)|*.java";
+            guardar.FilterIndex = 3;
+            guardar.RestoreDirectory = true;
+
+            if (guardar.ShowDialog() == DialogResult.OK)
+            {
+                rutaG = guardar.FileName;
+
+                TextWriter archivo;
+
+                archivo = new StreamWriter(rutaG);
+
+                archivo.WriteLine(entrada.Text);
+
+                contenidoArchivo = entrada.Text;
+
+                archivo.Close();
+
+                rutaA = rutaG;
+
+                nombre = rutaA.Split('\\')[rutaA.Split('\\').Length - 1];
+                nomArchivo.Text = nombre;
             }
         }
     }
