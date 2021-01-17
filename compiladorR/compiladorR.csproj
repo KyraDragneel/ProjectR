@@ -66,6 +66,7 @@
     <Compile Include="Analisis\Semantica\comprobacionConcatenacion.cs" />
     <Compile Include="Analisis\Semantica\comprobacionExpresion.cs" />
     <Compile Include="Analisis\Semantica\comprobacionScanner.cs" />
+    <Compile Include="Analisis\Semantica\comprobacionNombres.cs" />
     <Compile Include="Analisis\Semantica\deteccionVariables.cs" />
     <Compile Include="Analisis\Semantica\elementoError.cs" />
     <Compile Include="Analisis\Semantica\elementoToken.cs" />
