@@ -122,50 +122,77 @@ namespace compiladorR
 
                 auxiliarErrores.Clear();
 
-                auxiliarErrores = verificarDeclaracionArreglos.verificarDeclaracion(variables);
-
-                for (int i = 0; i < auxiliarErrores.Count; i++)
+                if (listaErrores.Count == 0)
                 {
-                    listaErrores.Add(auxiliarErrores[i]);
+                    auxiliarErrores = verificarDeclaracionArreglos.verificarDeclaracion(variables);
+
+                    for (int i = 0; i < auxiliarErrores.Count; i++)
+                    {
+                        listaErrores.Add(auxiliarErrores[i]);
+                    }
+
+                    auxiliarErrores.Clear();
                 }
 
-                auxiliarErrores.Clear();
-
-                auxiliarErrores = validarValoresVariables.validarValores(variables);
-
-                for (int i = 0; i < auxiliarErrores.Count; i++)
+                if (listaErrores.Count == 0)
                 {
-                    listaErrores.Add(auxiliarErrores[i]);
+                    auxiliarErrores = validarValoresVariables.validarValores(variables);
+
+                    for (int i = 0; i < auxiliarErrores.Count; i++)
+                    {
+                        listaErrores.Add(auxiliarErrores[i]);
+                    }
+
+                    auxiliarErrores.Clear();
                 }
 
-                auxiliarErrores.Clear();
-
-                auxiliarErrores = comprobacionConcatenacion.comprobarConcatenacion(variables);
-                
-                for (int i = 0; i < auxiliarErrores.Count; i++)
+                if (listaErrores.Count == 0)
                 {
-                    listaErrores.Add(auxiliarErrores[i]);
+                    auxiliarErrores = comprobacionConcatenacion.comprobarConcatenacion(variables);
+
+                    for (int i = 0; i < auxiliarErrores.Count; i++)
+                    {
+                        listaErrores.Add(auxiliarErrores[i]);
+                    }
+
+                    auxiliarErrores.Clear();
                 }
 
-                auxiliarErrores.Clear();
-
-                auxiliarErrores = comprobacionExpresion.comprobarExpresion(variables);
-
-                for (int i = 0; i < auxiliarErrores.Count; i++)
+                if (listaErrores.Count == 0)
                 {
-                    listaErrores.Add(auxiliarErrores[i]);
+                    auxiliarErrores = comprobacionExpresion.comprobarExpresion(variables);
+
+                    for (int i = 0; i < auxiliarErrores.Count; i++)
+                    {
+                        listaErrores.Add(auxiliarErrores[i]);
+                    }
+
+                    auxiliarErrores.Clear();
                 }
 
-                auxiliarErrores.Clear();
-
-                auxiliarErrores = comprobacionScanner.comprobarScanner(lista, variables);
-
-                for (int i = 0; i < auxiliarErrores.Count; i++)
+                if (listaErrores.Count == 0)
                 {
-                    listaErrores.Add(auxiliarErrores[i]);
+                    auxiliarErrores = comprobacionNombres.comprobarNombres(variables);
+
+                    for (int i = 0; i < auxiliarErrores.Count; i++)
+                    {
+                        listaErrores.Add(auxiliarErrores[i]);
+                    }
+
+                    auxiliarErrores.Clear();
                 }
 
-                auxiliarErrores.Clear();
+                if (listaErrores.Count == 0)
+                {
+                    auxiliarErrores = comprobacionScanner.comprobarScanner(lista, variables);
+
+                    for (int i = 0; i < auxiliarErrores.Count; i++)
+                    {
+                        listaErrores.Add(auxiliarErrores[i]);
+                    }
+
+                    auxiliarErrores.Clear();
+                }
 
                 if (listaErrores.Count == 0)
                 {
