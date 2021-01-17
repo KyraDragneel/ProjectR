@@ -49,7 +49,7 @@ namespace compiladorR
             this.textBox1.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox1.Location = new System.Drawing.Point(12, 115);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(486, 19);
+            this.textBox1.Size = new System.Drawing.Size(476, 19);
             this.textBox1.TabIndex = 0;
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
@@ -61,9 +61,9 @@ namespace compiladorR
             this.aceptar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.aceptar.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.aceptar.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.aceptar.Location = new System.Drawing.Point(377, 226);
+            this.aceptar.Location = new System.Drawing.Point(363, 213);
             this.aceptar.Name = "aceptar";
-            this.aceptar.Size = new System.Drawing.Size(121, 26);
+            this.aceptar.Size = new System.Drawing.Size(125, 25);
             this.aceptar.TabIndex = 1;
             this.aceptar.Text = "Aceptar";
             this.aceptar.UseVisualStyleBackColor = false;
@@ -72,7 +72,7 @@ namespace compiladorR
             // cerrar
             // 
             this.cerrar.Image = global::compiladorR.Properties.Resources.cerrar;
-            this.cerrar.Location = new System.Drawing.Point(478, 6);
+            this.cerrar.Location = new System.Drawing.Point(468, 12);
             this.cerrar.Name = "cerrar";
             this.cerrar.Size = new System.Drawing.Size(20, 20);
             this.cerrar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -136,7 +136,7 @@ namespace compiladorR
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
-            this.ClientSize = new System.Drawing.Size(510, 264);
+            this.ClientSize = new System.Drawing.Size(500, 250);
             this.Controls.Add(this.tipoVariable);
             this.Controls.Add(this.nombreVar);
             this.Controls.Add(this.tipoVar);

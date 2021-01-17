@@ -106,6 +106,12 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3.Designer.cs">
+      <DependentUpon>Form3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -113,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3.resx">
+      <DependentUpon>Form3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -139,13 +148,20 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="CodigosFuente\ejemploArreglos.java" />
     <Content Include="CodigosFuente\ejemploArreglos.txt" />
+    <Content Include="CodigosFuente\ejemploDoWhile.java" />
     <Content Include="CodigosFuente\ejemploDoWhile.txt" />
+    <Content Include="CodigosFuente\ejemploFor.java" />
     <Content Include="CodigosFuente\ejemploFor.txt" />
+    <Content Include="CodigosFuente\ejemploIf.java" />
     <Content Include="CodigosFuente\ejemploIf.txt" />
+    <Content Include="CodigosFuente\ejemploMuestra.java" />
     <Content Include="CodigosFuente\ejemploMuestra.txt" />
+    <Content Include="CodigosFuente\ejemploSwitch.java" />
     <Content Include="CodigosFuente\ejemploSwitch.txt" />
     <Content Include="CodigosFuente\ejemploVariables.txt" />
+    <Content Include="CodigosFuente\ejemploWhile.java" />
     <Content Include="CodigosFuente\ejemploWhile.txt" />
     <Content Include="CodigosFuente\pruebaConcatenaciones.txt" />
     <Content Include="CodigosFuente\pruebaContenidoValores.txt" />
