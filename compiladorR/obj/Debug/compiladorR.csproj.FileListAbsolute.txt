@@ -38,3 +38,5 @@ C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\
 C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\Irony.dll
 C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.csproj.CopyComplete
 C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\obj\Debug\compiladorR.Form3.resources
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\Syncfusion.Shared.Base.dll
+C:\Users\Marco\Documents\Proyectos Visual Studio\ProjectR\compiladorR\bin\Debug\Syncfusion.Shared.Base.xml
