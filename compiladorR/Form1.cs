@@ -8735,6 +8735,7 @@ namespace compiladorR
             //this.Size = Screen.PrimaryScreen.WorkingArea.Size;
             maximizar.Visible = false;
             restaurar.Visible = true;
+            nomArchivo.Location = new Point((this.Size.Width - nomArchivo.Size.Width) / 2, nomArchivo.Location.Y);
         }
 
         private void Restaurar_Click(object sender, EventArgs e)
@@ -8746,6 +8747,7 @@ namespace compiladorR
             //this.Size = new Size(1338, 781);
             restaurar.Visible = false;
             maximizar.Visible = true;
+            nomArchivo.Location = new Point((this.Size.Width - nomArchivo.Size.Width) / 2, nomArchivo.Location.Y);
         }
 
         private void AreaResultado_TextChanged(object sender, EventArgs e)
@@ -8914,6 +8916,7 @@ namespace compiladorR
 
                     nombre = rutaA.Split('\\')[rutaA.Split('\\').Length - 1];
                     nomArchivo.Text = nombre.Replace(".java", "");
+                    nomArchivo.Location = new Point((this.Size.Width - nomArchivo.Size.Width) / 2, nomArchivo.Location.Y);
                     leer.Close();
                 }
                 catch (Exception ex)
@@ -8984,6 +8987,7 @@ namespace compiladorR
 
                 nombre = rutaA.Split('\\')[rutaA.Split('\\').Length - 1];
                 nomArchivo.Text = nombre.Replace(".java","");
+                nomArchivo.Location = new Point((this.Size.Width - nomArchivo.Size.Width) / 2, nomArchivo.Location.Y);
             }
         }
 

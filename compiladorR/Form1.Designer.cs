@@ -116,7 +116,6 @@
             // 
             // nomArchivo
             // 
-            this.nomArchivo.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nomArchivo.AutoSize = true;
             this.nomArchivo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nomArchivo.ForeColor = System.Drawing.SystemColors.Control;
