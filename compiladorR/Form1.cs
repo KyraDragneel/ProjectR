@@ -64,13 +64,17 @@ namespace compiladorR
         {
             InitializeComponent();
             this.MaximumSize = SystemInformation.PrimaryMonitorMaximizedWindowSize;
+            entrada.AcceptsTab = true;
         }
 
         private void run_Click(object sender, EventArgs e)
         {
             if(!rutaA.Equals(""))
             {
-                Guardar();
+                if(!contenidoArchivo.Equals(entrada.Text))
+                {
+                    Guardar();
+                }
                 ejecutar();
             }
             else
@@ -8909,7 +8913,7 @@ namespace compiladorR
                     }
 
                     nombre = rutaA.Split('\\')[rutaA.Split('\\').Length - 1];
-                    nomArchivo.Text = nombre;
+                    nomArchivo.Text = nombre.Replace(".java", "");
                     leer.Close();
                 }
                 catch (Exception ex)
@@ -8979,7 +8983,7 @@ namespace compiladorR
                 rutaA = rutaG;
 
                 nombre = rutaA.Split('\\')[rutaA.Split('\\').Length - 1];
-                nomArchivo.Text = nombre;
+                nomArchivo.Text = nombre.Replace(".java","");
             }
         }
 
