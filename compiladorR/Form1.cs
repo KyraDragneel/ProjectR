@@ -68,6 +68,25 @@ namespace compiladorR
 
         private void run_Click(object sender, EventArgs e)
         {
+            if(!rutaA.Equals(""))
+            {
+                Guardar();
+                ejecutar();
+            }
+            else
+            {
+                string respuesta = Form3.Show();
+
+                if (respuesta.Equals("si"))
+                {
+                    GuardarComo();
+                    ejecutar();
+                }
+            }
+        }
+
+        private void ejecutar()
+        {
             valorStop = false;
             cambiarPanelEstado();
             areaResultado.Clear();
@@ -105,7 +124,7 @@ namespace compiladorR
                     lista.Add(auxiliar);
                 }
 
-                variables = deteccionVariables.detectarVariables(lista,true);
+                variables = deteccionVariables.detectarVariables(lista, true);
 
                 /*
                 for (int i = 0; i < variables.Count; i++)
@@ -422,16 +441,16 @@ namespace compiladorR
                         {
                             areaResultado.AppendText("Proceso finalizado" + "\n");
                         }
-                        
+
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         valorStop = true;
                         cambiarPanelEstado();
-                        areaResultado.AppendText("Error: "+ex.Message + "\n");
+                        areaResultado.AppendText("Error: " + ex.Message + "\n");
                         areaResultado.SelectionStart = areaResultado.Text.Length;
                         areaResultado.ScrollToCaret();
-                    }                  
+                    }
                 }
                 else
                 {
@@ -8679,6 +8698,22 @@ namespace compiladorR
 
         private void Salir_Click(object sender, EventArgs e)
         {
+            if (!entrada.Text.Equals(contenidoArchivo))
+            {
+                string respuesta = Form3.Show();
+
+                if (respuesta.Equals("si"))
+                {
+                    if (!rutaA.Equals(""))
+                    {
+                        Guardar();
+                    }
+                    else
+                    {
+                        GuardarComo();
+                    }
+                }
+            }
             Application.Exit();
         }
 
@@ -8946,6 +8981,34 @@ namespace compiladorR
                 nombre = rutaA.Split('\\')[rutaA.Split('\\').Length - 1];
                 nomArchivo.Text = nombre;
             }
+        }
+
+        private void pictureBox2_Paint(object sender, PaintEventArgs e)
+        {
+            int caracter = 0;
+            int altura = entrada.GetPositionFromCharIndex(0).Y;
+            int espacioDerecha = 3;
+            Color Verde = Color.FromArgb(16, 169, 104);
+            SolidBrush myBrush = new SolidBrush(Verde);
+
+            if (entrada.Lines.Length > 0)
+            {
+                for (int i = 0; i < entrada.Lines.Length; i++)
+                {
+                    e.Graphics.DrawString((i + 1).ToString(), entrada.Font, myBrush, pictureBox2.Width - e.Graphics.MeasureString((i + 1).ToString(), entrada.Font).Width - espacioDerecha, altura);
+                    caracter += entrada.Lines[i].Length + 1;
+                    altura = entrada.GetPositionFromCharIndex(caracter).Y;
+                }
+            }
+            else
+            {
+                e.Graphics.DrawString("1", entrada.Font, myBrush, pictureBox2.Width - e.Graphics.MeasureString((0 + 1).ToString(), entrada.Font).Width - espacioDerecha, altura);
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            pictureBox2.Refresh();
         }
     }
 }
