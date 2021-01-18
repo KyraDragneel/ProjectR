@@ -1,4 +1,4 @@
-﻿import java.util.Scanner;
+import java.util.Scanner;
 
 public class miClase
 {
@@ -33,3 +33,4 @@ public class miClase
 		while(opcion != 0);
 	}
 }
+
