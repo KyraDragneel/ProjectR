@@ -15,9 +15,9 @@ namespace compiladorR.Analisis.Semantica
         {
             List<string> errores = new List<string>();
             string auxiliarTipo;
-            string errorAsignacion = "Validacion Error: El valor asignado no pertenece al tipo esperado. Linea: ";
-            string errorDeclaracion = "Validacion Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
-            string errorAlmacenado = "Validacion Error: La variable asignada no ha sido inicializada. Linea: ";
+            string errorAsignacion = "Error de Validación: El valor asignado no pertenece al tipo esperado. Línea: ";
+            string errorDeclaracion = "Error de Validación: El valor de la variable asignada no ha sido declarado previamente. Línea: ";
+            string errorAlmacenado = "Error de Validación: La variable asignada no ha sido inicializada. Línea: ";
             int residuo = 0;
             float residuoF = 0;
             double residuoD = 0;

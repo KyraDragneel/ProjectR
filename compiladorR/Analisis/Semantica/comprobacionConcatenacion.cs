@@ -13,9 +13,9 @@ namespace compiladorR.Analisis.Semantica
         public static List<string> comprobarConcatenacion(List<elementoVariable> variables)
         {
             List<string> errores = new List<string>();
-            string errorDeclaracion = "Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
-            string errorAnalisis = "Error: El valor de la variable asignada no ha podido ser analizado. Linea: ";
-            string errorAlmacenado = "Error: La variable asignada no ha sido inicializada. Linea: ";
+            string errorDeclaracion = "Error de Cadena: El valor de la variable asignada no ha sido declarado previamente. Línea: ";
+            string errorAnalisis = "Error de Cadena: El valor de la variable asignada no ha podido ser analizado. Línea: ";
+            string errorAlmacenado = "Error de Cadena: La variable asignada no ha sido inicializada previamente. Línea: ";
 
             for (int i = 0; i < variables.Count; i++)
             {

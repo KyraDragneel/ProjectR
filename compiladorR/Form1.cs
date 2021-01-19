@@ -50,6 +50,7 @@ namespace compiladorR
         #endregion
 
         bool valorStop;
+        bool valorCorreccion;
 
         #region Variables documentos
 
@@ -92,6 +93,7 @@ namespace compiladorR
         private void ejecutar()
         {
             valorStop = false;
+            valorCorreccion = false;
             cambiarPanelEstado();
             areaResultado.Clear();
             List<elementoToken> lista = new List<elementoToken>();
@@ -111,7 +113,15 @@ namespace compiladorR
                 {
                     Console.WriteLine(arbol.ParserMessages[i].Message);
                 }
-                areaResultado.AppendText("Error: Código no permitido por la gramatica" + "\n");
+                areaResultado.AppendText("Error de Gramática: Código no permitido por la gramática" + "\n");
+                
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 valorStop = true;
                 cambiarPanelEstado();
             }
@@ -444,6 +454,13 @@ namespace compiladorR
                         if (valorStop == false)
                         {
                             areaResultado.AppendText("Proceso finalizado" + "\n");
+
+                            int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length-2);
+
+                            int length = areaResultado.Lines[areaResultado.Lines.Length-2].Length;
+
+                            areaResultado.Select(start, length);
+                            areaResultado.SelectionColor = Color.LightGreen;
                         }
 
                     }
@@ -451,7 +468,15 @@ namespace compiladorR
                     {
                         valorStop = true;
                         cambiarPanelEstado();
-                        areaResultado.AppendText("Error: " + ex.Message + "\n");
+                        areaResultado.AppendText("Error de Ejecución: " + ex.Message + "\n");
+
+                        int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                        int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                        areaResultado.Select(start, length);
+                        areaResultado.SelectionColor = Color.OrangeRed;
+
                         areaResultado.SelectionStart = areaResultado.Text.Length;
                         areaResultado.ScrollToCaret();
                     }
@@ -464,10 +489,21 @@ namespace compiladorR
 
                     for (int i = 0; i < listaErrores.Count; i++)
                     {
+                        colorearErrores(listaErrores[i]);
                         areaResultado.AppendText(listaErrores[i] + "\n");
+                        
+                        int start = areaResultado.GetFirstCharIndexFromLine(i);
+
+                        int length = areaResultado.Lines[i].Length;
+
+                        areaResultado.Select(start, length);
+                        areaResultado.SelectionColor = Color.OrangeRed;
+
                         areaResultado.SelectionStart = areaResultado.Text.Length;
                         areaResultado.ScrollToCaret();
                     }
+
+                    valorCorreccion = true;
                 }
             }
         }
@@ -2573,7 +2609,15 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de Declaración: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -2763,8 +2807,6 @@ namespace compiladorR
                 else if(linea[4].getNombre().Equals("print"))
                 {
                     areaResultado.AppendText(nuevoValor);
-                    areaResultado.SelectionStart = areaResultado.Text.Length;
-                    areaResultado.ScrollToCaret();
                 }
                 else
                 {
@@ -2776,7 +2818,15 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de Impresión: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -7456,7 +7506,15 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de Asignación: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -7584,7 +7642,15 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de If: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -7701,7 +7767,15 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de Switch: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -7827,7 +7901,15 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de For: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -7915,7 +7997,15 @@ namespace compiladorR
             }
             catch (Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de While: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -8005,7 +8095,15 @@ namespace compiladorR
             }
             catch (Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de Do While: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -8306,7 +8404,15 @@ namespace compiladorR
             }
             catch(Exception ex)
             {
-                areaResultado.AppendText("Error: " + ex.Message + "\n");
+                areaResultado.AppendText("Error de Estructura: " + ex.Message + "\n");
+
+                int start = areaResultado.GetFirstCharIndexFromLine(areaResultado.Lines.Length - 2);
+
+                int length = areaResultado.Lines[areaResultado.Lines.Length - 2].Length;
+
+                areaResultado.Select(start, length);
+                areaResultado.SelectionColor = Color.OrangeRed;
+
                 areaResultado.SelectionStart = areaResultado.Text.Length;
                 areaResultado.ScrollToCaret();
                 valorStop = true;
@@ -8749,12 +8855,6 @@ namespace compiladorR
             maximizar.Visible = true;
             nomArchivo.Location = new Point((this.Size.Width - nomArchivo.Size.Width) / 2, nomArchivo.Location.Y);
         }
-
-        private void AreaResultado_TextChanged(object sender, EventArgs e)
-        {
-            
-
-        }
         
         class MenuColorTable : ProfessionalColorTable
         {
@@ -8996,7 +9096,7 @@ namespace compiladorR
             int caracter = 0;
             int altura = entrada.GetPositionFromCharIndex(0).Y;
             int espacioDerecha = 3;
-            Color Verde = Color.FromArgb(16, 169, 104);
+            Color Verde = Color.LightGreen;
             SolidBrush myBrush = new SolidBrush(Verde);
 
             if (entrada.Lines.Length > 0)
@@ -9017,6 +9117,168 @@ namespace compiladorR
         private void timer1_Tick(object sender, EventArgs e)
         {
             pictureBox2.Refresh();
+        }
+        
+        private void colorearPalabrasReservadas(String palabra, int index)
+        {
+            int inicio = index;
+            int longitud = palabra.Length;
+            entrada.Select(inicio,longitud);
+
+            switch(palabra)
+            {
+                case "void":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "return":
+                    entrada.SelectionColor = Color.BlueViolet;
+                    break;
+
+                case "null":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "true":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "false":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "out":
+                    entrada.SelectionColor = Color.LightGreen;
+                    break;
+
+                case "break":
+                    entrada.SelectionColor = Color.BlueViolet;
+                    break;
+
+                case "main":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "static":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "public":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "private":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "class":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "new":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "in":
+                    entrada.SelectionColor = Color.LightGreen;
+                    break;
+
+                case "import":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "if":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "else":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "default":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "while":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "do":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "for":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "switch":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "case":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "int":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "float":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "double":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "String":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "boolean":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+
+                case "char":
+                    entrada.SelectionColor = Color.DeepSkyBlue;
+                    break;
+            }
+
+            entrada.Select(entrada.Text.Length, 0);
+            entrada.HideSelection = true;
+            entrada.ShowSelectionMargin = false;
+        }
+        
+        private void colorearErrores(string cadenaError)
+        {
+            int lineainicio = Int32.Parse(cadenaError.Split(' ')[cadenaError.Split(' ').Length-1])-1;
+
+            int start = entrada.GetFirstCharIndexFromLine(lineainicio);
+
+            int primerCaracter = start;
+
+            int length = entrada.Lines[lineainicio].Length;
+
+            entrada.Select(primerCaracter, length);
+            entrada.SelectionBackColor = Color.OrangeRed;
+            entrada.SelectionColor = Color.White;
+        }
+
+        private void entrada_Click(object sender, EventArgs e)
+        {
+            if (valorCorreccion == true)
+            {
+                valorCorreccion = false;
+                int cursorPosition = entrada.SelectionStart;
+                entrada.Text = entrada.Text;
+                entrada.SelectionStart = cursorPosition;
+                entrada.ScrollToCaret();
+            }
+        }
+
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form4.Show();
         }
     }
 }

@@ -4,6 +4,10 @@ public class miClase
 {
 	public static void main(String[] args)
 	{
-		System.out.println("Hola");
+		while(1<2)
+		{
+			System.out.print("-");
+		}
 	}
 }
+

@@ -14,9 +14,9 @@ namespace compiladorR.Analisis.Semantica
             bool scannerDeclarado = false;
             string auxiliarImportacion = "";
 
-            string errorImportacion = "Error: La clase Scanner no ha sido importada previamente. Linea: ";
-            string errorDeclaracion = "Error: El objeto Scanner no ha sido declarado previamente. Linea: ";
-            string errorAsignacion = "Error: El valor asignado no pertenece al tipo esperado. Linea: ";
+            string errorImportacion = "Error de Scanner: La clase Scanner no ha sido importada previamente. Línea: ";
+            string errorDeclaracion = "Error de Scanner: El objeto Scanner no ha sido declarado previamente. Línea: ";
+            string errorAsignacion = "Error de Scanner: El valor asignado no pertenece al tipo esperado. Línea: ";
 
             #region Comprobar Declaracion Scanner
 
