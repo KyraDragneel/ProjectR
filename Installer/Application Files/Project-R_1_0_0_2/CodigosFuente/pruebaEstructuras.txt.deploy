@@ -1,0 +1,198 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+	public static void main(String[] args)
+	{
+	    
+		Scanner leer = new Scanner(System.in);
+
+		int i4 = 0;
+		int i3 = 5;
+		int[] arregloI1 = new int[i3];
+		int[] arregloI2;
+
+		int[][] matrizI1 = new int[i3][i3];
+		int[][] matrizI2;
+
+		int i0 = 3;
+		int i1 = i0 + arregloI1[i0-2];
+		int i2 = matrizI1[2-1][2-1] + 2;
+
+		i1 = arregloI1[0];
+
+		arregloI2 = arregloI1;
+		arregloI1 = new int[i3-1];
+
+		matrizI2 = matrizI1;
+		matrizI1 = new int[4][4];
+
+		arregloI1[0] = i3;
+		arregloI1[1] = 7;
+		arregloI1[2] = arregloI2[0];
+		//arregloI1[3] = leer.nextInt();
+
+		matrizI1[0][0] = i3;
+		matrizI1[1][1] = 7;
+		matrizI1[2][2] = arregloI2[0];
+		matrizI1[3][3] = leer.nextInt();
+
+		System.out.println("Este es el arreglo int: " + arregloI1[0]);
+		System.out.println("Este es la matriz int: " + matrizI1[0][0]);
+
+		float[] arregloF1 = new float[i3];
+		float[] arregloF2;
+
+		float[][] matrizF1 = new float[i3][i3];
+		float[][] matrizF2;
+
+		float f0 = 4;
+		float f1 = f0 + arregloF1[2];
+		float f2 = matrizF1[2-1][2-1] + 2;
+
+		f1 = matrizF1[0][0];
+
+		arregloF2 = arregloF1;
+		arregloF1 = new float[5];
+
+		matrizF2 = matrizF1;
+		matrizF1 = new float[4][4];
+
+		arregloF1[0] = f0;
+		arregloF1[1] = 7.5;
+		arregloF1[2] = arregloF2[0];
+		//arregloF1[3] = leer.nextFloat();
+
+		matrizF1[0][0] = f0;
+		matrizF1[1][1] = 7.5;
+		matrizF1[2][2] = arregloF2[0];
+		matrizF1[3][3] = leer.nextFloat();
+
+		System.out.println("Este es el arreglo float: " + arregloF1[0]);
+		System.out.println("Este es la matriz float: " + matrizF1[0][0]);
+
+		double[] arregloD1 = new double[i3];
+		double[] arregloD2;
+
+		double[][] matrizD1 = new double[3][3];
+		double[][] matrizD2;
+
+		double d0 = 5;
+		double d1 = d0 + arregloD1[2];
+		double d2 = matrizD1[2-1][2-1] + 2;
+
+		d1 = arregloD1[0];
+
+		arregloD2 = arregloD1;
+		arregloD1 = new double[6];
+
+		matrizD2 = matrizD1;
+		matrizD1 = new double[4][4];
+
+		arregloD1[0] = d0;
+		arregloD1[1] = 8.5;
+		arregloD1[2] = arregloD2[0];
+		//arregloD1[3] = leer.nextDouble();
+
+		matrizD1[0][0] = d0;
+		matrizD1[1][1] = 8.5;
+		matrizD1[2][2] = arregloD2[0];
+		matrizD1[3][3] = leer.nextDouble();
+
+		System.out.println("Este es el arreglo double: " + arregloD1[0]);
+		System.out.println("Este es la matriz double: " + matrizD1[0][0]);
+		
+		String[] arregloS1 = new String[3];
+		String[] arregloS2;
+
+		String[][] matrizS1 = new String[i3][i3];
+		String[][] matrizS2;
+		
+		String s0 = "String 0 ";
+		String s1 = arregloS1[2];
+		String s2 = matrizS1[2-1][2-1] + 2;
+
+		s1 = matrizS1[0][0];
+
+		arregloS2 = arregloS1;
+		arregloS1 = new String[6];
+
+		matrizS2 = matrizS1;
+		matrizS1 = new String[4][4];
+
+		arregloS1[i4] = s0;
+		arregloS1[1] = "hola prro";
+		arregloS1[2] = arregloS2[0];
+		//arregloS1[3] = leer.next();
+
+		matrizS1[0][i4] = s0;
+		matrizS1[1][1] = "Hola prro";
+		matrizS1[2][2] = arregloS2[0];
+		matrizS1[3][3] = leer.next();
+
+		System.out.println("Este es el arreglo String: " + arregloS1[0]);
+		System.out.println("Este es la matriz String: " + matrizS1[0][0]);
+		
+		char[] arregloC1 = new char[i3];
+		char[] arregloC2;
+
+		char[][] matrizC1 = new char[i3][i3];
+		char[][] matrizC2;
+
+		char c0 = 'c';
+		char c1 = arregloC1[2];
+		char c2 = matrizC1[2-1][2-1];
+
+		c1 = arregloC1[0];
+
+		arregloC2 = arregloC1;
+		arregloC1 = new char[6];
+
+		matrizC2 = matrizC1;
+		matrizC1 = new char[4][4];
+
+		arregloC1[0] = c0;
+		arregloC1[1] = 'f';
+		arregloC1[2] = arregloC2[0];
+		//arregloC1[3] = leer.nextChar();
+
+		matrizC1[0][0] = c0;
+		matrizC1[1][1] = 'f';
+		matrizC1[2][2] = arregloC2[0];
+		matrizC1[3][3] = leer.nextChar();
+
+		System.out.println("Este es el arreglo char: " + arregloC1[0]);
+		System.out.println("Este es la matriz char: " + matrizC1[0][0]);
+		
+		boolean[] arregloB1 = new boolean[i3];
+		boolean[] arregloB2;
+
+		boolean[][] matrizB1 = new boolean[3][3];
+		boolean[][] matrizB2;
+
+		boolean b0 = true;
+		boolean b1 = arregloB1[2];
+		boolean b2 = matrizB1[2-1][2-1];
+
+		b1 = matrizB1[0][0];
+
+		arregloB2 = arregloB1;
+		arregloB1 = new boolean[6];
+
+		matrizB2 = matrizB1;
+		matrizB1 = new boolean[4][4];
+
+		arregloB1[0] = b0;
+		arregloB1[1] = true;
+		arregloB1[2] = arregloB2[0];
+		//arregloB1[3] = leer.nextBoolean();
+
+		matrizB1[0][0] = b0;
+		matrizB1[1][1] = true;
+		matrizB1[2][2] = arregloB2[0];
+		matrizB1[3][3] = leer.nextBoolean();
+
+		System.out.println("Este es el arreglo boolean: " + arregloB1[0]);
+		System.out.println("Este es la matriz boolean: " + matrizB1[0][0]);
+	}
+}

@@ -1,0 +1,27 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+	public static void main(String[] args)
+	{
+		int[] arreglo1;
+		arreglo1 = new int[3];
+		arreglo1[0] = 0;
+		arreglo1[3] = 1;
+		arreglo2 = new int[3];
+		arreglo2[0] = 0;
+		String[] arreglo2 = new String[3];
+		int[] arreglo2 = new int[3];
+
+		int[][] matriz1;
+		matriz1 = new int[3][3];
+		matriz1[0][0] = 0;
+		matriz1[0][3] = 1;
+		matriz1[3][0] = 1;
+		matriz1[3][3] = 1;
+		matriz2 = new int[3][3];
+		matriz2[0][0] = 0;
+		String[][] matriz2 = new String[3][3];
+		int[][] matriz2 = new int[3][3];
+	}
+}

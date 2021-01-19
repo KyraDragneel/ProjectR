@@ -1,0 +1,100 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+	public static void main(String[] args)
+	{
+
+		int aux = leer.nextInt();
+		System.out.println("");
+
+		String i = "Hola mundo";
+		String n = 0;
+		String j = false;
+		String e = i;
+		String[][] arreglo1;
+		String z = a;
+		String f = arreglo1[0][0];
+		String t = arreglo2[0][0];
+		String s = "Hola" + i + "perro";
+		String s5 = "Hola" + s + "perro";
+		String s2 = "Hola" + w;
+		String s6 = "Hola" + i;
+		String s3 = i + "Hola" + w;
+		String s7 = i + "Hola" + arreglo1[0][0];
+		String s4 = i + "Hola";
+		String s8 = w + "Hola";
+		String s9 = (2+3*7);
+		String s10 = 'a';
+
+		boolean b1 = false;
+		boolean b2 = true;
+		boolean b3 = b1;
+		boolean b4 = w;
+		boolean b5 = arreglo3[0][0];
+		boolean[] arreglo4 = new boolean[9];
+		boolean b6 = arreglo4[0];
+		boolean b7 = 0;
+		boolean b8 = (2+3+4*7);
+		boolean b9 = "Hola";
+		boolean b10 = "Hola" + "perro";
+		boolean b11 = 'a';
+
+		char c1 = 'c';
+		char c2 = w;
+		char c3 = c1;
+		char c4 = arreglo3[0][0];
+		char[] arregloC = new char[3];
+		char c5 = arregloC[0];
+		char c6 = 0;
+		char c7 = (0+2+3+4);
+		char c8 = "Hola";
+		char c9 = "Hola" + "que hace";
+		char c10 = true;
+
+		int i1 = 0;
+		int i2 = true;
+		int i3 = i1;
+		int i4 = w;
+		int i5 = 'c';
+		int i6 = arregloZ[0];
+		int[] arregloI = new int[0];
+		int i7 = arregloI[0];
+		int i8 = (2*3+4);
+		int i9 = 3 + 2 + 1 * (3 - 2);
+		int i10 = (3-2)*3+2/4;
+		int i11 = "Hola mundo" + i1;
+		int i12 = 0.24;
+		int i13 = 2.5 + 3.4 * (3 - 2);
+
+		float f1 = 0;
+		float f2 = true;
+		float f3 = f1;
+		float f4 = w;
+		float f5 = 'c';
+		float f6 = arregloZ[0];
+		float[] arregloF = new float[0];
+		float f7 = arregloF[0];
+		float f8 = (2*3+4);
+		float f9 = 3+2+1*(3-2);
+		float f10 = (3-2)*3+2/4;
+		float f11 = "Hola mundo" + f1;
+		float f12 = 0.24;
+		float f13 = 2.5 + f12 * (3 - 2);
+
+		double d1 = 0;
+		double d2 = true;
+		double d3 = d1;
+		double d4 = w;
+		double d5 = 'c';
+		double d6 = arregloZ[0];
+		double[] arregloD = new double[0];
+		double d7 = arregloD[0];
+		double d8 = (2*3+4);
+		double d9 = 3+2+1*(3-2);
+		double d10 = (3-2)*3+2/4;
+		double d11 = "Hola mundo" + f1;
+		double d12 = 0.24;
+		double d13 = 2.5 + 3.4 * (3 - 2);
+	}
+}
