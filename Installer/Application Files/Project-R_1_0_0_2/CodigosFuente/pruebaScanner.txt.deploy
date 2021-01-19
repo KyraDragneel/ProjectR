@@ -1,0 +1,18 @@
+﻿import java.util;
+import java.util.Scanner;
+import java.util.Example;
+
+public class miClase
+{
+
+	public static void main(String[] args)
+	{
+
+		Scanner leer = new Scanner(System.in);
+
+		int i1 = leer.nextInt();
+		int i2 = leer.nextFloat();
+
+	}
+
+}
