@@ -11,7 +11,7 @@ namespace compiladorR.Analisis.Semantica
         public static List<string> comprobarNombres(List<elementoVariable> variables)
         {
             List<string> errores = new List<string>();
-            string errorNombre = "Error: El nombre asignado a la variable no es valido. Linea: ";
+            string errorNombre = "Error de Nombre: El nombre asignado a la variable no es válido. Línea: ";
             string[] arregloPalabras = { 
                 "void",
                 "return",

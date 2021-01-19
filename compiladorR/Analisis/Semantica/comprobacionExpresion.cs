@@ -13,10 +13,10 @@ namespace compiladorR.Analisis.Semantica
         public static List<string> comprobarExpresion(List<elementoVariable> variables)
         {
             List<string> errores = new List<string>();
-            string errorDeclaracion = "Expresion Error: El valor de la variable asignada no ha sido declarado previamente. Linea: ";
-            string errorAsignacion = "Expresion Error: El valor asignado no pertenece al tipo esperado. Linea: ";
-            string errorAnalisis = "Expresion Error: El valor de la variable asignada no ha podido ser analizado. Linea: ";
-            string errorAlmacenado = "Expresion Error: La variable asignada no ha sido inicializada. Linea: ";
+            string errorDeclaracion = "Error de Expresión: El valor de la variable asignada no ha sido declarado previamente. Línea: ";
+            string errorAsignacion = "Error de Expresión: El valor asignado no pertenece al tipo esperado. Línea: ";
+            string errorAnalisis = "Error de Expresión: El valor de la variable asignada no ha podido ser analizado. Línea: ";
+            string errorAlmacenado = "Error de Expresión: La variable asignada no ha sido inicializada. Línea: ";
 
             for (int i = 0; i < variables.Count; i++)
             {
